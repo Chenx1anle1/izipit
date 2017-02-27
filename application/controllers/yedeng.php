@@ -74,6 +74,10 @@ class yedeng extends CI_Controller {
 		return $data;
 	}
 
+	public function wall()
+	{
+		
+	}
 
 	public function m3d()
 	{

@@ -7,7 +7,13 @@
 	}
 	
 	#flashcontent {
-		height: 100%;
+/*		width: 7rem;
+		height: 8rem;
+*/
+		height:auto;
+		width:auto;
+
+
 	}
 	/* end hide */
 
@@ -15,15 +21,19 @@
 		height: 100%;
 		margin: 0;
 		padding: 0;
-		background-color: #EEEEEE;
-		color:#EEEEEE;
+		background-color: #DCDCDC;
+		color:#DCDCDC;
 	}
 
 </style>
 	<div id="flashcontent"></div>
+	<?php
+
+
+	?>
 	<script type="text/javascript">
 	
-		var fo = new SWFObject("<?php echo base_url('dist/swf/TiltViewer.swf') ?>", "viewer","100%", "100%", "9.0.28", "#9e9e9e");			
+		var fo = new SWFObject("<?php echo base_url('dist/swf/TiltViewer.swf') ?>", "viewer","1350", "700", "#9e9e9e");			
 		
 		// TILTVIEWER CONFIGURATION OPTIONS
 		// To use an option, uncomment it by removing the "//" at the start of the line
@@ -44,18 +54,19 @@
 		//这一句是让导航显示
 		fo.addParam("wmode","Opaque");
 		fo.addVariable("xmlURL", "<?php echo base_url('images/dust/gallery.xml') ?>");
+//		fo.addVariable("ajaxURL", "http://cxlmeitu.com/yedeng/wall");
 		fo.addVariable("maxJPGSize","640");
-		
+
 		//GENERAL OPTIONS		
 		fo.addVariable("useReloadButton", "false");
-		fo.addVariable("columns", "3");
+		fo.addVariable("columns", "4");
 		fo.addVariable("rows", "6");
 		//fo.addVariable("showFlipButton", "true");
 		//fo.addVariable("showLinkButton", "true");		
-		fo.addVariable("linkLabel", "View image info");
+//		fo.addVariable("linkLabel", "View image info");
 		//这一句关联 图片view url
 		//fo.addVariable("frameColor", "0xFF0000");
-		fo.addVariable("backColor", "0xff5f83");
+//		fo.addVariable("backColor", "0xff5f83");
 		//fo.addVariable("bkgndInnerColor", "0xFF00FF");
 		//fo.addVariable("bkgndOuterColor", "0x0000FF");				
 		//fo.addVariable("langGoFull", "Go Fullscreen");
