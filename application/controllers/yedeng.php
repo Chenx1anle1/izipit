@@ -133,7 +133,11 @@ class yedeng extends CI_Controller {
 			}
 		}
 		if (empty($arr_list)) {
-			$this->listinfo($start+5, $limit+5);
+			// if (($start+5)<15) {
+				$this->listinfo($start+5, $limit);
+			// } else {
+				// return array();				
+			// }
 		} else {
 			return $arr_list;
 		}
