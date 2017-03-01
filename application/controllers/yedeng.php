@@ -31,11 +31,14 @@ class yedeng extends CI_Controller {
 
 	public function index() {
 		$offset = $this->input->get('page')?:0;
+		$uid_key = $this->input->get('uid')?:0;
 		$this->head['title'] = "夜灯-" . $this->title;
       	$this->load->view('default/mt_header.php',$this->head);
 		$this->db->select('*')->from('yedeng');
 		$all = $this->db->count_all_results();
-      	$this->load->view('mt_yedeng.php', array('offset'=>$offset, 'total'=>$all));
+		$uid = 0;
+
+      	$this->load->view('mt_yedeng.php', array('offset'=>$offset, 'total'=>$all, 'uid_key'=>$uid_key));
       	
       	$this->load->view('default/mt_footer.php');
 	}
@@ -63,8 +66,10 @@ class yedeng extends CI_Controller {
 				'title' => $_POST['title'],
 				'time' => $_POST['time'],
 				'url' => $_POST['url'],
-				'lrc' => ''
+				'lrc' => '',
+				'user_id' => $_POST['uid']?:3
 			];
+			echo json_encode($data);die;
 			$this->db->insert('yedeng', $data);
 			$insert_mid = $this->db->insert_id();
 		}
@@ -121,7 +126,7 @@ class yedeng extends CI_Controller {
 		return $output;
 	}
 
-	private function _get_diff($offset = 0, $output = array(), $ids = array(), $start = 0, $limit = 5)
+	private function _get_diff($offset = 0, $uid = 0, $output = array(), $ids = array(), $start = 0, $limit = 5)
 	{
 		$arr_list = array();
 
@@ -138,7 +143,7 @@ class yedeng extends CI_Controller {
 		}
 		if (empty($arr_list)) {
 			// if (($start+5)<15) {
-				$this->listinfo($offset, $start+5, $limit);
+				$this->listinfo($offset, $uid, $start+5, $limit);
 			// } else {
 				// return array();				
 			// }
@@ -147,48 +152,115 @@ class yedeng extends CI_Controller {
 		}
 	}
 
-	public function listinfo($offset = 0, $start = 0, $limit = 5) {
+	public function remove_love($uid = 0, $mid = 0)
+	{
+		$this->db->select('*')
+				 ->from('yedeng')
+				 ->like(array('love_ids' => $uid.',', 'mid' => $mid));
+		$music = $this->db->get()->row_array();
+		$music['love_ids'] = str_replace($uid.',', '', $music['love_ids']);
+		$data = array( 'love_ids' => $music['love_ids'] );  
+		$this->db->where('mid',$mid); 
+		$this->db->update('yedeng', $data);
+		return $this->db->affected_rows();
+	}
+
+	public function add_love($uid = 0, $mid = 0)
+	{
+		$this->db->select('*')
+				 ->from('yedeng')
+				 ->where(array('mid' => $mid));
+				 //->like(array('love_ids' => $uid.','));
+		$music = $this->db->get()->row_array();
+		$music['love_ids'] .= $uid.',';
+		$data = array( 'love_ids' => $music['love_ids'] );  
+		$this->db->where('mid',$mid); 
+		$this->db->update('yedeng', $data);
+		return $this->db->affected_rows();
+	}
+
+	public function is_love($uid = 0, $mid = 0)
+	{
+		$this->db->select('*')
+				 ->from('yedeng')
+				 ->where(array('mid' => $mid))
+				 ->like(array('love_ids' => $uid.','));
+		$status = $this->db->get()->row_array();
+		if (!empty($status)) {
+			return true;
+		} else {
+			return false;			
+		}
+	}
+
+	public function love($mid = 0)
+	{
+		$loveArray = array();
+		if( $this->session->userdata('online') ) {
+			$uid = $this->session->userdata('id');
+			$is_love = 0;
+			if($this->is_love($uid,$mid)) {
+				if ($this->remove_love($uid,$mid)) {
+					$is_love = 1;
+				}
+			} else {
+				if ($this->add_love($uid,$mid)) {
+					$is_love = 1;
+				}
+			}
+
+			$jsonStr = array('is_love' => $is_love, 'is_login' => 1 );
+		} else {
+			$jsonStr = array('is_love' => 0, 'is_login' => 0 );
+		}
+
+		echo json_encode($jsonStr);
+	}
+
+	public function listinfo($offset = 0, $uid = 0, $start = 0, $limit = 5) {
 		$output = $this->_get_cbb_list($start, $limit);
-		
+		if( $this->session->userdata('online') && $uid > 0 ) {
+			$user_id = $this->session->userdata('id');
+		} else {
+			$user_id = 0;
+		}
 		// 获取ids
-		$my_cbb_db_list = $this->db->select('*')
-								 ->from('yedeng')
-								 ->order_by('time desc')
-//								 ->limit(5,$offset = 0)
-								 ->get()->result_array();
+		$this->db->select('*')
+				 ->from('yedeng');
+		$user_id && $this->db->like(array('love_ids'=>$user_id));
+		$this->db->order_by('time desc');
+		$my_cbb_db_list = $this->db->get()->result_array();
 		$ids = array();
 		foreach ($my_cbb_db_list as $val) {
 			$ids[] = $val['mid'];
 		}
 
-		$data_db_list = $this->db->select('*')
-								 ->from('yedeng')
-								 ->order_by('time desc')
-								 ->limit(5,$offset)
-								 ->get()->result_array();
+		$this->db->select('*')
+				 ->from('yedeng');
+		$user_id && $this->db->like(array('love_ids'=>$user_id.','));
+		$this->db->order_by('time desc');
+		$this->db->limit(5,$offset);
+		$data_db_list = $this->db->get()->result_array();
 		$album = array();
+		$heart = '<i style="float:left" id="heart" class="icon-heart"></i><span>';
 		foreach ($data_db_list as $key => $val) {
+			$mid_input = '</span><input type="hidden" value="'.$val['mid'].'">';
+			if ($this->session->userdata('id') && strpos($val['love_ids'], $this->session->userdata('id').',')) {
+				$album[$key]['author'] = '经济之声'.$mid_input.$heart;
+			} else {
+				$album[$key]['author'] = '经济之声'.$mid_input;
+			}
 			$album[$key]['title'] = $val['title'];
-			$album[$key]['author'] = '经济之声';
 			$album[$key]['url'] = $val['url'];
 			$album[$key]['pic'] = 'http://www.izipit.top/upload/user/18ca38041958081b8e966faac5c803be_3.jpg';
 			$album[$key]['lrc'] = 'http://www.izipit.top/dist/js/player/c.lrc';
 		}
-		//var_dump($ids);die;
-		$arr_list = $this->_get_diff($offset, $output, $ids, $start, $limit);
-		//var_dump($arr_list);
+		$arr_list = $this->_get_diff($offset, $user_id, $output, $ids, $start, $limit);
 
 
 		if (!empty($arr_list)) {
 			$ArrAlbum = array();
 			$ArrAlbum = [
-//					[
-//			            'title'=>'La fille aux cheveux de lin',
-//			            'author'=>'Claude Debussy',
-//			            'url'=>'http://m10.music.126.net/20170301203344/229f63e32de0df014dbf38ffd8a44d1a/ymusic/160f/d6b3/e922/db2ebdd0ba0604400e53e1039cab3a98.mp3',
-//			            'pic'=>'http://p3.music.126.net/1pIjVU7tV2NU5AWqgxK49A==/1297423720814393.jpg',
-//			            'lrc'=>'http://www.izipit.top/dist/js/player/a.lrc'
-//					],
 					[
 			            'title'=>'secret base~君がくれたもの~',
 			            'author'=>'茅野愛衣',
@@ -196,17 +268,11 @@ class yedeng extends CI_Controller {
 			            'pic'=>'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2534129488,2639379667&fm=58',
 			            'lrc'=>'https://aplayer.js.org/secret%20base~%E5%90%9B%E3%81%8C%E3%81%8F%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE~.lrc'
 			        ],
-//			        [
-//			            'title'=>'财经夜读_20170210',
-//			            'author'=>'经济之声',
 //			            'url'=>'http://182.201.212.91/dl.radio.cn/aod2014/Archive/jjzs/2017/02/10/cjyd_1469674708648jjzs_1486738804047.m4a?wsiphost=local',
-//			            'pic'=>'http://www.izipit.top/upload/user/18ca38041958081b8e966faac5c803be_3.jpg',
-//			            'lrc'=>'http://www.izipit.top/dist/js/player/c.lrc'
-//			        ]
 			];
 			$merge = array_merge($ArrAlbum, $album);
 			$ArrOut = ($offset==0)?$merge:$album;
-			echo json_encode(array('album'=>$ArrOut, 'list'=>$arr_list));
+			echo json_encode(array('album'=>$ArrOut, 'list'=>$arr_list, 'user_id'=>$user_id));
 		}
 	}
 }

@@ -38,7 +38,10 @@
 		<ul>
 		<?php
 			$total_page = ceil($total%5);
-			//
+			$uid = 0;
+			if ($uid_key) {
+				$uid = $this->session->userdata('id');
+			}
 			$total_page = $total_page<8?8:$total_page;
 		?>
         <?php for ($i=0; $i<=$total_page; $i++) { ?>
@@ -46,15 +49,21 @@
         		<li style="list-style:none;float:left;">·</li>
 			<?php } else { ?>
 	        	<li style="list-style:none;float:left;">
-	        	<a<?php if ($i*5 == $offset) :?> class="now btn btn-primary"<?php endif; ?> style="padding: 1px 12px;font-size: 10px;min-width: 62px;" class="btn btn-primary" href="<?php echo site_url().'yedeng'.'?page='.(5*$i) ?>"><?php echo '第'.($i+1).'页' ?></a>
+	        	<a<?php if ($i*5 == $offset) :?> class="now btn btn-primary"<?php endif; ?> style="padding: 1px 12px;font-size: 10px;min-width: 62px;" class="btn btn-primary" href="<?php echo site_url().'yedeng'.'?page='.(5*$i) ?><?php echo $uid ? '&uid='.$uid : '' ?>"><?php echo '第'.($i+1).'页' ?></a>
 				</li>
 			<?php } ?>
         <?php } ?>
         <?php if (($offset-5)>-5) { ?>
-			<li style="list-style:none;float:left;"><a style="padding: 1px 12px;font-size: 10px;min-width: 62px;" class="btn btn-primary" href="<?php echo site_url().'yedeng'.'?page='.($offset-5) ?>"><?php echo '上一页' ?></a></li>
+			<li style="list-style:none;float:left;"><a style="padding: 1px 12px;font-size: 10px;min-width: 62px;" class="btn btn-primary" href="<?php echo site_url().'yedeng'.'?page='.($offset-5) ?><?php echo $uid ? '&uid='.$uid : '' ?>"><?php echo '上一页' ?></a></li>
 		<?php } ?>
         <?php if (($offset)<$total_page*5) { ?>
-			<li style="list-style:none;float:left;"><a style="padding: 1px 12px;font-size: 10px;min-width: 62px;" class="btn btn-primary" href="<?php echo site_url().'yedeng'.'?page='.($offset+5) ?>"><?php echo '下一页' ?></a></li>
+			<li style="list-style:none;float:left;"><a style="padding: 1px 12px;font-size: 10px;min-width: 62px;" class="btn btn-primary" href="<?php echo site_url().'yedeng'.'?page='.($offset+5) ?><?php echo $uid ? '&uid='.$uid : '' ?>"><?php echo '下一页' ?></a></li>
+		<?php } ?>
+		<?php if (!$uid_key) { ?>
+			<li style="list-style:none;float:left;"><a style="padding: 1px 12px;font-size: 10px;min-width: 62px;" class="btn btn-primary" href="<?php echo site_url().'yedeng'.'?page=0&uid='.$this->session->userdata('id') ?>"><?php echo '我的' ?></a></li>
+		<?php } ?>
+		<?php if ($uid_key) { ?>
+			<li style="list-style:none;float:left;"><a style="padding: 1px 12px;font-size: 10px;min-width: 62px;" class="btn btn-primary" href="<?php echo site_url().'yedeng'.'?page=0' ?>"><?php echo '退出收藏' ?></a></li>
 		<?php } ?>
 		</ul>
         <hr>
@@ -81,18 +90,28 @@
 	</script>
     <script src="<?php echo base_url('dist/js/player/APlayer.min.js') ?>"></script>
 	<script>
-
 		var url   = Home + "yedeng/listinfo/";
 		var page = 0;
  		var href = window.location.search;
-		var page = href.substring(href.lastIndexOf('=')+1, href.length);
+		var page = 0;
+		var uid = '';
+		if (href) {
+			if (href.lastIndexOf('&')>0) {
+					var length = href.lastIndexOf('&');
+					uid = href.substring(length+5, href.length);
+					uid = '/'+uid;
+					alert(uid);
+					page = href.substring(href.lastIndexOf('page=')+5, length);
+			} else {
+				page = href.substring(href.lastIndexOf('=')+1, href.length);
+			}
+		}
 		function list () {
-			var surl = url + page;
+			var surl = url + page +  uid;
 			$.getJSON(surl, function(json) {
 				if ($.isEmptyObject(json)) {
 					return;
 				};
-				$('#loader').show();
 				if (page) {
 					$('.aplayer').empty();
 
@@ -109,17 +128,42 @@
 					    listmaxheight: '180px',
 					    music: json.album
 					});
+					ap5.on('play', function(){
+						if(document.getElementById('love')!=undefined) {
+						} else {
+							$(".aplayer-controller").append('<i id="love" onclick="love()" class="icon-heart-empty"></i>');
+						}
+					});
 				} else {$("#player").append('<p><p>暂未收录</p><a style="padding: 1px 12px;font-size: 10px;min-width: 62px;" class="btn btn-primary" href="<?php echo site_url().'yedeng'.'?page='.($offset-5) ?>"><?php echo '上一页' ?></a></p></p>');}
 				$.each(json.list, function(i, item) {
-					$("#programlist").append(
+					if (!json.user_id) {
+						$("#programlist").append(
 
-					"<li id="+item.id+"><span class='btn btn-primary border btn-sm' style='padding: 1px 12px;font-size: 10px;min-width: 62px;'>"+'&nbsp'+item.title+"</span><span class=morel_xz><a class='btn btn-primary border btn-sm' href="+item.url+" style='padding: 1px 12px;font-size: 10px;min-width: 62px;' target=_blank>&nbsp去播放</a></span><form id="+item.id+" method = 'post'  action = http://www.izipit.top/yedeng/save_data ><input style='padding: 1px 12px;font-size: 10px;min-width: 62px;' type=txt name=url><input type=hidden name=id value="+item.id+" required><input type=hidden name=time value="+item.uptime+" required><input type=hidden name=title value="+item.title+" required><input style='font-size: 10px;min-width: 40px;' class='btn-primary' border type=submit></form></li>"
-					  );
+						"<li id="+item.id+"><span class='btn btn-primary border btn-sm' style='padding: 1px 12px;font-size: 10px;min-width: 62px;'>"+'&nbsp'+item.title+"</span><span class=morel_xz><a class='btn btn-primary border btn-sm' href="+item.url+" style='padding: 1px 12px;font-size: 10px;min-width: 62px;' target=_blank>&nbsp去播放</a></span><form id="+item.id+" method = 'post'  action = http://www.izipit.top/yedeng/save_data ><input style='padding: 1px 12px;font-size: 10px;min-width: 62px;' type=txt name=url><input type=hidden name=id value="+item.id+" required><input type=hidden name=time value="+item.uptime+" required><input type=hidden name=title value="+item.title+" required><input type=hidden name=uid value="+json.user_id+" required><input style='font-size: 10px;min-width: 40px;' class='btn-primary' border type=submit></form></li>"
+						  );
+					}
 				});
 			});
-			$('#loader').hide();
 		}
 		list();
+		function love(){
+			var mid = $(".aplayer-list-light input").val();
+			$.getJSON("<?php echo base_url('yedeng/love') . '/' ?>" + mid, function(json){
+				//收藏图标处理
+				if ($.isEmptyObject(json)) {
+					return;
+				};
+				if (json.is_login) {
+					if (json.is_love) {
+						if ($(".aplayer-list-light>i").length != 0) {
+							$(".aplayer-list-light i").remove();
+						} else {
+							$(".aplayer-list-light").append('<i style="float:left" id="heart" class="icon-heart"></i>');
+						}
+					}						
+				}
+			});
+		}
 	</script>
 	<script type="text/javascript">
 		 var livemmsURL = "http://bk2.radio.cn/mms4";
@@ -131,97 +175,3 @@
 		 var locatsite = "http://www.radio.cn";
 		 var locationhttp = encodeURI(locatsite);
 	</script>
-<script>
-
-function morelist(programName='财经夜读'){
-
-	var moreescape = encodeURI(programName);
-	var moreescape = '财经夜读';
-	var channelproid = "";
-	channelproid="15";
-
-	var url=livemmsURL+"/videoPlay/getMorePrograms.jspa?programName="+moreescape+"&start=0&limit=20&channelId="+channelproid+"&callback=?";
-
-	$.ajax({
-			type:'post',
-			dataType:'json',
-			url:url,
-			data:null,
-			error: function(){$('#wait').css('display','');},
-			success:function(result){
-			$("#programlist").html("");
-			   var total = result.total;
-			   if (typeof(total) == "undefined") { 
-                var total = 0;
-                  } 
-			   //document.getElementById('moretotal').value=total;
-			   var num_entries = total;
-	           var showCount = 20;
-				$.each(result.programs, function(i, item) {
-				$("#programlist").append(
-
-				"<li id="+item.programId+"><span class=morel_xz><a onclick=downloadvodmore("+item.programId+")>下载</a></span><span class=morel_date>"+item.creationTime+"</span>"+
-				"<a onclick=playvodmore("+item.programId+") href=javascript:void(0) class=gbl_bt>"+item.programName+"</a></li>"
-				  );
-				 });
-	
-	///// 创建分页
-	   var initPagination = function() {
-
-		$("#Pagination").pagination(num_entries, {
-			num_edge_entries: 0, 
-			num_display_entries: 20, 
-			callback: pageselectCallback,
-			items_per_page:showCount 
-		  }
-			
-			
-			
-			);
-	    };
-	 	function pageselectCallback(page_index){
-		var max_elem = Math.min((page_index+1) *showCount, num_entries);	
-
-		var num_start =page_index*showCount;
-		var num_end =showCount;
-         
-		   var url=livemmsURL+"/videoPlay/getMorePrograms.jspa?programName="+moreescape+"&start="+num_start+"&limit="+num_end+"&channelId="+channelproid+"&callback=?";
-		  
-           $.ajax({
-			type:'post',
-			dataType:'json',
-			url:url,
-			data:null,
-			error: function(){$('#wait').css('display','');},
-			success:function(result){
-			
-			$("#programlist").html("");
-			
-				$.each(result.programs, function(i, item) {
-				$("#programlist").append(
-
-				"<li id="+item.programId+"><span class=morel_xz><a onclick=downloadvodmore("+item.programId+")>下载</a></span><span class=morel_date>"+item.creationTime+"</span>"+
-				"<a onclick=playvodmore("+item.programId+") href=javascript:void(0) class=gbl_bt>"+item.programName+"</a></li>"
-				  );
-				 });
-		
-				  }
-			   });
-
-		 }
-
-		}
-			
-	 });
-}
-//morelist();
-function downloadvodmore(programId){
-  var countjson=livemmsURL+"/reportDataCollectMgr/downloadData.jspa? programId="+programId+"&videoType=PC";//下载统计
-
- $.getJSON(countjson,function(result){});
-      var url=livemmsURL+"/videoPlay/getVodProgramPlayUrlJson.jspa?programId="+programId+"&programVideoId=0&videoType=PC&terminalType="+terminalTypeCbb+"&dflag=1";//new
-      //window.open (url);
-      console.log(result);
-
-}
-</script>

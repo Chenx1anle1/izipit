@@ -15,9 +15,14 @@ class Login extends CI_Controller {
 	  		}
 	 	} else {
 	 		if($this->user_model->login()){
+	 			$user_db = $this->db->select('*')
+								 ->from('xi_users')
+								 ->where(array('user_login'=>$this->input->post('username')))
+								 ->get()->row_array();
 	 			$sess = array(
 		        	'Username' => $this->input->post('username'),
-		        	'online' => true
+		        	'online' => true,
+		        	'id'=>$user_db['ID']
 		      	);
 		      	$this->session->set_userdata($sess);
 
