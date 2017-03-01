@@ -74,7 +74,7 @@
 				$.each(json.list, function(i, item) {
 					$("#programlist").append(
 
-					"<li id="+item.id+"><span class=morel_date>"+item.title+"</span><span class=morel_xz><a href="+item.url+" target=_blank>去播放</a></span><form id="+item.id+" method = 'post'  action = http://cxlmeitu.com/yedeng/save_data ><input type=txt name=url><input type=hidden name=id value="+item.id+" required><input type=hidden name=time value="+item.uptime+" required><input type=hidden name=title value="+item.title+" required><input type=submit></form></li>"
+					"<li id="+item.id+"><span class=morel_date>"+item.title+"</span><span class=morel_xz><a href="+item.url+" target=_blank>去播放</a></span><form id="+item.id+" method = 'post'  action = http://www.izipit.top/yedeng/save_data ><input type=txt name=url><input type=hidden name=id value="+item.id+" required><input type=hidden name=time value="+item.uptime+" required><input type=hidden name=title value="+item.title+" required><input type=submit></form></li>"
 					  );
 				});
 			});

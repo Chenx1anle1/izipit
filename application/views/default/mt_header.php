@@ -32,6 +32,17 @@
     <script>
       var Home      = "<?php echo base_url() ?>";
     </script>
+    <!--百度统计 -->
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "https://hm.baidu.com/hm.js?22450bbe4eb7b5f51344a2941963ebbd";
+		  var s = document.getElementsByTagName("script")[0]; 
+		  s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+
     <style>
       *::selection{color:#fff;background:#f36;}
       *::-moz-selection{color:#fff;background:#f36;}
