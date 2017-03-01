@@ -164,6 +164,43 @@
 				}
 			});
 		}
+		//如果添加文字的话注意 每次播放结束 前提醒用户提交文字
+		ap1.on('ended', function () {
+		    console.log('ended');
+		});
+/*
+		function getHosList(url, data, oPages, oUl){
+			
+			ajax(url, data, function(res){
+				if ( res.code == 1 ) {
+					//set pages
+					oPages.html( res.data.pages );
+					//set h-list
+					var oList = res.data.data;
+					tpl(tpl_str, oList, function(str){
+						oUl.html(str);
+						handelTxt(oUl);
+					});
+					if ( !oList.length ) {
+						oUl.html('<li>暂无数据</li>');
+					}
+				}else{}
+			});
+		}
+
+		function ajax(url, data, success){
+			$.ajax({
+				async: false,
+				type: 'post',
+				dataType: 'json',
+				data: data,
+				url:url,
+				success:function(res){
+					success(res);
+				}
+			});
+		}
+*/
 	</script>
 	<script type="text/javascript">
 		 var livemmsURL = "http://bk2.radio.cn/mms4";

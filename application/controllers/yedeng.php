@@ -270,7 +270,7 @@ class yedeng extends CI_Controller {
 			            'lrc'=>'https://aplayer.js.org/secret%20base~%E5%90%9B%E3%81%8C%E3%81%8F%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE~.lrc'
 			];
 			$new['author'] = '茅野愛衣</span><input type="hidden" value="784533">';
-			if (strpos($this_music['love_ids'], $this->session->userdata('id').',')) {
+			if ($this->session->userdata('id') && strpos($this_music['love_ids'], $this->session->userdata('id').',')) {
 				$new['author'] = '茅野愛衣</span><input type="hidden" value="784533">'.'<i style="float:left;color:#ff8080" id="heart" class="icon-heart"></i><span>';
 			}
 			array_push($ArrAlbum, $new);
