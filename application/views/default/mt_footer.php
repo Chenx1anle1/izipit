@@ -1,3 +1,4 @@
+<?php if (strpos($_SERVER['REQUEST_URI'], 'yedeng') === false) { ?>
 <?php if( !$this->session->userdata('online') ) { ?>
 		<div class="bottom_box">
 		    <div class="bottom" style="margin-leftt:440px;">
@@ -25,8 +26,9 @@
 		});
 	</script>
 <?php } ?>
+<?php } ?>
 <?php if (strlen($_SERVER['REQUEST_URI'])>1 && strpos($_SERVER['REQUEST_URI'], '_mypic') === false && strpos($_SERVER['REQUEST_URI'], 'album') === false) { ?>
-<?php if (strpos($_SERVER['REQUEST_URI'], 'yedeng') === false && strpos($_SERVER['REQUEST_URI'], 'search') === false) { ?>
+<?php if (strpos($_SERVER['REQUEST_URI'], 'search') === false) { ?>
 <?php if (strpos($_SERVER['REQUEST_URI'], 'popular') === false && strpos($_SERVER['REQUEST_URI'], 'user') === false) { ?>
 <?php if (strpos($_SERVER['REQUEST_URI'], 'catalogue') === false && strpos($_SERVER['REQUEST_URI'], 'tag') === false) { ?>
 <footer id="colophon" role="contentinfo" itemscope="">

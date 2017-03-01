@@ -51,7 +51,7 @@
   </head>
   <body>
     <div class="wrap" >
-      <nav class="navbar navbar-default border navbar-fixed-top" role="navigation" style="z-index:100000000;">
+      <nav class="navbar navbar-default border navbar-fixed-top" role="navigation" style="max-width: 115rem;z-index:100000000;">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
             <span class="sr-only"></span>

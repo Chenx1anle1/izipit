@@ -30,9 +30,12 @@ class yedeng extends CI_Controller {
 	}
 
 	public function index() {
+		$offset = $this->input->get('page')?:0;
 		$this->head['title'] = "夜灯-" . $this->title;
       	$this->load->view('default/mt_header.php',$this->head);
-      	$this->load->view('mt_yedeng.php');
+		$this->db->select('*')->from('yedeng');
+		$all = $this->db->count_all_results();
+      	$this->load->view('mt_yedeng.php', array('offset'=>$offset, 'total'=>$all));
       	
       	$this->load->view('default/mt_footer.php');
 	}
@@ -54,18 +57,18 @@ class yedeng extends CI_Controller {
 	}
 
 	public function save_data () {
-		$data = [
-			'mid' => $_POST['id'],
-			'title' => $_POST['title'],
-			'time' => $_POST['time'],
-			'url' => $_POST['url'],
-			'lrc' => ''
-		];
-		$this->db->insert('yedeng', $data);
-		$insert_mid = $this->db->insert_id();
-        if ($insert_mid) {
-            echo 'ok';
-        }		
+		if ($_POST['url'] != '') {
+			$data = [
+				'mid' => $_POST['id'],
+				'title' => $_POST['title'],
+				'time' => $_POST['time'],
+				'url' => $_POST['url'],
+				'lrc' => ''
+			];
+			$this->db->insert('yedeng', $data);
+			$insert_mid = $this->db->insert_id();
+		}
+        redirect(base_url().'yedeng', 'refresh');
 	}
 
 	function get_that_one()
@@ -118,9 +121,10 @@ class yedeng extends CI_Controller {
 		return $output;
 	}
 
-	private function _get_diff($output = array(), $ids = array(), $start = 0, $limit = 5)
+	private function _get_diff($offset = 0, $output = array(), $ids = array(), $start = 0, $limit = 5)
 	{
 		$arr_list = array();
+
 		foreach ($output['programs'] as $key => $val) {
 			if (!in_array($val['programId'], $ids)) {
 				$arr_list[$key]['title'] = $val['programName'];
@@ -134,7 +138,7 @@ class yedeng extends CI_Controller {
 		}
 		if (empty($arr_list)) {
 			// if (($start+5)<15) {
-				$this->listinfo($start+5, $limit);
+				$this->listinfo($offset, $start+5, $limit);
 			// } else {
 				// return array();				
 			// }
@@ -143,38 +147,48 @@ class yedeng extends CI_Controller {
 		}
 	}
 
-	public function listinfo($start = 0, $limit = 5) {
+	public function listinfo($offset = 0, $start = 0, $limit = 5) {
 		$output = $this->_get_cbb_list($start, $limit);
 		
+		// 获取ids
+		$my_cbb_db_list = $this->db->select('*')
+								 ->from('yedeng')
+								 ->order_by('time desc')
+//								 ->limit(5,$offset = 0)
+								 ->get()->result_array();
+		$ids = array();
+		foreach ($my_cbb_db_list as $val) {
+			$ids[] = $val['mid'];
+		}
+
 		$data_db_list = $this->db->select('*')
 								 ->from('yedeng')
 								 ->order_by('time desc')
+								 ->limit(5,$offset)
 								 ->get()->result_array();
 		$album = array();
-		$ids = array();
 		foreach ($data_db_list as $key => $val) {
 			$album[$key]['title'] = $val['title'];
 			$album[$key]['author'] = '经济之声';
 			$album[$key]['url'] = $val['url'];
 			$album[$key]['pic'] = 'http://www.izipit.top/upload/user/18ca38041958081b8e966faac5c803be_3.jpg';
 			$album[$key]['lrc'] = 'http://www.izipit.top/dist/js/player/c.lrc';
-			$ids[] = $val['mid'];
 		}
 		//var_dump($ids);die;
-		$arr_list = $this->_get_diff($output, $ids, $start, $limit);
+		$arr_list = $this->_get_diff($offset, $output, $ids, $start, $limit);
 		//var_dump($arr_list);
 
 
 		if (!empty($arr_list)) {
 			$ArrAlbum = array();
 			$ArrAlbum = [
-					[
-			            'title'=>'あっちゅ～ま青春!',
-			            'author'=>'七森中☆ごらく部',
-			            'url'=>'http://devtest.qiniudn.com/あっちゅ～ま青春!.mp3',
-			            'pic'=>'http://devtest.qiniudn.com/あっちゅ～ま青春!.jpg',
-			            'lrc'=>'http://www.izipit.top/dist/js/player/a.lrc'
-					],
+//					[
+//			            'title'=>'La fille aux cheveux de lin',
+//			            'author'=>'Claude Debussy',
+//			            'url'=>'http://m10.music.126.net/20170301203344/229f63e32de0df014dbf38ffd8a44d1a/ymusic/160f/d6b3/e922/db2ebdd0ba0604400e53e1039cab3a98.mp3',
+//			            'pic'=>'http://p3.music.126.net/1pIjVU7tV2NU5AWqgxK49A==/1297423720814393.jpg',
+//			            'lrc'=>'http://www.izipit.top/dist/js/player/a.lrc'
+//					],
 					[
 			            'title'=>'secret base~君がくれたもの~',
 			            'author'=>'茅野愛衣',
@@ -182,16 +196,17 @@ class yedeng extends CI_Controller {
 			            'pic'=>'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2534129488,2639379667&fm=58',
 			            'lrc'=>'https://aplayer.js.org/secret%20base~%E5%90%9B%E3%81%8C%E3%81%8F%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE~.lrc'
 			        ],
-			        [
-			            'title'=>'财经夜读',
-			            'author'=>'经济之声',
-			            'url'=>'http://182.201.212.91/dl.radio.cn/aod2014/Archive/jjzs/2017/02/10/cjyd_1469674708648jjzs_1486738804047.m4a?wsiphost=local',
-			            'pic'=>'http://www.izipit.top/upload/user/18ca38041958081b8e966faac5c803be_3.jpg',
-			            'lrc'=>'http://www.izipit.top/dist/js/player/c.lrc'
-			        ]
+//			        [
+//			            'title'=>'财经夜读_20170210',
+//			            'author'=>'经济之声',
+//			            'url'=>'http://182.201.212.91/dl.radio.cn/aod2014/Archive/jjzs/2017/02/10/cjyd_1469674708648jjzs_1486738804047.m4a?wsiphost=local',
+//			            'pic'=>'http://www.izipit.top/upload/user/18ca38041958081b8e966faac5c803be_3.jpg',
+//			            'lrc'=>'http://www.izipit.top/dist/js/player/c.lrc'
+//			        ]
 			];
-			$ArrAlbum = array_merge($ArrAlbum, $album);
-			echo json_encode(array('album'=>$ArrAlbum, 'list'=>$arr_list));
+			$merge = array_merge($ArrAlbum, $album);
+			$ArrOut = ($offset==0)?$merge:$album;
+			echo json_encode(array('album'=>$ArrOut, 'list'=>$arr_list));
 		}
 	}
 }
