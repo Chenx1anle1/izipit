@@ -100,7 +100,6 @@
 					var length = href.lastIndexOf('&');
 					uid = href.substring(length+5, href.length);
 					uid = '/'+uid;
-					alert(uid);
 					page = href.substring(href.lastIndexOf('page=')+5, length);
 			} else {
 				page = href.substring(href.lastIndexOf('=')+1, href.length);
