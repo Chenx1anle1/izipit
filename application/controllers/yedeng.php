@@ -237,11 +237,11 @@ class yedeng extends CI_Controller {
 		$this->db->select('*')
 				 ->from('yedeng');
 		$user_id && $this->db->like(array('love_ids'=>$user_id.','));
-		$this->db->order_by('time desc');
+		$this->db->order_by('time desc, title desc');
 		$this->db->limit(5,$offset);
 		$data_db_list = $this->db->get()->result_array();
 		$album = array();
-		$heart = '<i style="float:left" id="heart" class="icon-heart"></i><span>';
+		$heart = '<i style="float:left;color:#ff8080" id="heart" class="icon-heart"></i><span>';
 		foreach ($data_db_list as $key => $val) {
 			$mid_input = '</span><input type="hidden" value="'.$val['mid'].'">';
 			if ($this->session->userdata('id') && strpos($val['love_ids'], $this->session->userdata('id').',')) {
@@ -269,7 +269,7 @@ class yedeng extends CI_Controller {
 			];
 			$new['author'] = '茅野愛衣</span><input type="hidden" value="784533">';
 			if (strpos($this_music['love_ids'], $this->session->userdata('id').',')) {
-				$new['author'] = '茅野愛衣</span><input type="hidden" value="784533">'.'<i style="float:left" id="heart" class="icon-heart"></i><span>';
+				$new['author'] = '茅野愛衣</span><input type="hidden" value="784533">'.'<i style="float:left;color:#ff8080" id="heart" class="icon-heart"></i><span>';
 			}
 			array_push($ArrAlbum, $new);
 			$merge = array_merge($ArrAlbum, $album);
