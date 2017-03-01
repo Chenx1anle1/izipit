@@ -128,6 +128,7 @@
 					    listmaxheight: '180px',
 					    music: json.album
 					});
+					$(".aplayer-controller").append('<i id="love" onclick="love()" class="icon-heart-empty"></i>');
 					ap5.on('play', function(){
 						if(document.getElementById('love')!=undefined) {
 						} else {

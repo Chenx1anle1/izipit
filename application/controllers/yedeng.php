@@ -67,9 +67,8 @@ class yedeng extends CI_Controller {
 				'time' => $_POST['time'],
 				'url' => $_POST['url'],
 				'lrc' => '',
-				'user_id' => $_POST['uid']?:3
+				'up_id' => $_POST['uid']?:3
 			];
-			echo json_encode($data);die;
 			$this->db->insert('yedeng', $data);
 			$insert_mid = $this->db->insert_id();
 		}
@@ -260,16 +259,19 @@ class yedeng extends CI_Controller {
 
 		if (!empty($arr_list)) {
 			$ArrAlbum = array();
-			$ArrAlbum = [
-					[
+			$this_music = $this->db->select('*')->from('yedeng')->where(array('mid'=>784533))->get()->row_array();
+			$new = [
 			            'title'=>'secret base~君がくれたもの~',
-			            'author'=>'茅野愛衣',
+			            'author'=>'123',
 			            'url'=>'http://devtest.qiniudn.com/secret base~.mp3',
 			            'pic'=>'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2534129488,2639379667&fm=58',
 			            'lrc'=>'https://aplayer.js.org/secret%20base~%E5%90%9B%E3%81%8C%E3%81%8F%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE~.lrc'
-			        ],
-//			            'url'=>'http://182.201.212.91/dl.radio.cn/aod2014/Archive/jjzs/2017/02/10/cjyd_1469674708648jjzs_1486738804047.m4a?wsiphost=local',
 			];
+			$new['author'] = '茅野愛衣</span><input type="hidden" value="784533">';
+			if (strpos($this_music['love_ids'], $this->session->userdata('id').',')) {
+				$new['author'] = '茅野愛衣</span><input type="hidden" value="784533">'.'<i style="float:left" id="heart" class="icon-heart"></i><span>';
+			}
+			array_push($ArrAlbum, $new);
 			$merge = array_merge($ArrAlbum, $album);
 			$ArrOut = ($offset==0)?$merge:$album;
 			echo json_encode(array('album'=>$ArrOut, 'list'=>$arr_list, 'user_id'=>$user_id));
