@@ -225,7 +225,8 @@ class yedeng extends CI_Controller {
 		}
 		// 获取ids
 		$this->db->select('*')
-				 ->from('yedeng');
+				 ->from('yedeng')
+				 ->where(array('mid !='=>784533));
 		$user_id && $this->db->like(array('love_ids'=>$user_id));
 		$this->db->order_by('time desc');
 		$my_cbb_db_list = $this->db->get()->result_array();
@@ -235,7 +236,8 @@ class yedeng extends CI_Controller {
 		}
 
 		$this->db->select('*')
-				 ->from('yedeng');
+				 ->from('yedeng')
+				 ->where(array('mid !='=>784533));
 		$user_id && $this->db->like(array('love_ids'=>$user_id.','));
 		$this->db->order_by('time desc, title desc');
 		$this->db->limit(5,$offset);
