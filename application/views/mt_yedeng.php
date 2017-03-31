@@ -65,6 +65,7 @@
 		<?php if ($uid_key) { ?>
 			<li style="list-style:none;float:left;"><a style="padding: 1px 12px;font-size: 10px;min-width: 62px;" class="btn btn-primary" href="<?php echo site_url().'yedeng'.'?page=0' ?>"><?php echo '退出收藏' ?></a></li>
 		<?php } ?>
+			<li style="list-style:none;float:left;"><a style="padding: 1px 12px;font-size: 10px;min-width: 62px;" class="btn btn-primary" target="_blank" href="<?php echo site_url().'yedeng/howto' ?>"><?php echo '查看如何收录' ?></a></li>
 		</ul>
         <hr>
         <div id="player" class="aplayer"></div>

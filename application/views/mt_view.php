@@ -41,7 +41,6 @@
 							<?php foreach ($arrytags as $key => $value2){?>
 	
 
-		<!------------------    $i=2    -------------------------------------->
 		<?php if($i == 2) {?>
 			<?php if($j == 2) {?>
 			<?php if($arrytags[1] == $st_tag || $arrytags[1] == $nd_tag || $arrytags[0] == $st_tag || $arrytags[0] == $nd_tag) {?><!-- 复数  -->
@@ -54,7 +53,6 @@
 			<?php } ?>	
 			<?php } ?>	
 			<?php } ?>	
-			<!-------------------------------------------------------->
 			<?php if($j == 3) {?>
 			<?php if($arrytags[2] == $st_tag || $arrytags[2] == $nd_tag || $arrytags[1] == $st_tag || $arrytags[1] == $nd_tag || $arrytags[0] == $st_tag || $arrytags[0] == $nd_tag) {?>
 			<?php if($value2 != $st_tag && $value2 != $nd_tag && $value['ID'] != $id) {?>
@@ -66,7 +64,6 @@
 			<?php } ?>	
 			<?php } ?>	
 			<?php } ?>	
-			<!-------------------------------------------------------->		
 			<?php if($j == 4) {?>
 			<?php if($arrytags[3] == $st_tag || $arrytags[3] == $nd_tag || $arrytags[2] == $st_tag || $arrytags[2] == $nd_tag || $arrytags[1] == $st_tag || $arrytags[1] == $nd_tag || $arrytags[0] == $st_tag || $arrytags[0] == $nd_tag) {?><!-- 复数  -->
 			<?php if($value2 != $st_tag && $value2 != $nd_tag && $value['ID'] != $id) {?><!-- 单数  -->
@@ -78,7 +75,6 @@
 			<?php } ?>	
 			<?php } ?>	
 			<?php } ?>	
-			<!-------------------------------------------------------->
 			<?php if($j == 5) {?>
 			<?php if($arrytags[4] == $st_tag || $arrytags[4] == $nd_tag ||$arrytags[3] == $st_tag || $arrytags[3] == $nd_tag || $arrytags[2] == $st_tag || $arrytags[2] == $nd_tag || $arrytags[1] == $st_tag || $arrytags[1] == $nd_tag || $arrytags[0] == $st_tag || $arrytags[0] == $nd_tag) {?><!-- 复数  -->
 			<?php if($value2 != $st_tag && $value2 != $nd_tag && $value['ID'] != $id) {?><!-- 单数  -->
@@ -91,7 +87,6 @@
 			<?php } ?>	
 			<?php } ?>	
 		<?php } ?>	
-		<!------------------    $i=3    -------------------------------------->
 		<?php if($i == 3) {?>
 			<?php if($j == 2) {?>
 			<?php if($arrytags[1] == $st_tag || $arrytags[1] == $nd_tag || $arrytags[1] == $rd_tag || $arrytags[0] == $st_tag || $arrytags[0] == $nd_tag || $arrytags[0] == $rd_tag) {?>
@@ -104,7 +99,6 @@
 			<?php } ?>	
 			<?php } ?>	
 			<?php } ?>	
-			<!-------------------------------------------------------->
 			<?php if($j == 3) {?>
 			<?php if($arrytags[2] == $st_tag || $arrytags[2] == $nd_tag || $arrytags[2] == $rd_tag || $arrytags[1] == $st_tag || $arrytags[1] == $nd_tag || $arrytags[1] == $rd_tag || $arrytags[0] == $st_tag || $arrytags[0] == $nd_tag || $arrytags[0] == $rd_tag) {?>
 			<?php if($value2 != $rd_tag && $value2 != $nd_tag && $value2 != $st_tag && $value['ID'] != $id) {?>
@@ -116,7 +110,6 @@
 			<?php } ?>	
 			<?php } ?>	
 			<?php } ?>	
-			<!-------------------------------------------------------->
 			<?php if($j == 4) {?>
 			<?php if($arrytags[3] == $st_tag || $arrytags[3] == $nd_tag || $arrytags[3] == $rd_tag || $arrytags[2] == $st_tag || $arrytags[2] == $nd_tag || $arrytags[2] == $rd_tag || $arrytags[1] == $st_tag || $arrytags[1] == $nd_tag || $arrytags[1] == $rd_tag || $arrytags[0] == $st_tag || $arrytags[0] == $nd_tag || $arrytags[0] == $rd_tag) {?>
 			<?php if($value2 != $rd_tag && $value2 != $nd_tag && $value2 != $st_tag && $value['ID'] != $id) {?>
@@ -128,7 +121,6 @@
 			<?php } ?>	
 			<?php } ?>	
 			<?php } ?>	
-			<!-------------------------------------------------------->
 			<?php if($j == 5) {?>
 			<?php if($arrytags[4] == $st_tag || $arrytags[4] == $nd_tag || $arrytags[4] == $rd_tag || $arrytags[3] == $st_tag || $arrytags[3] == $nd_tag || $arrytags[3] == $rd_tag || $arrytags[2] == $st_tag || $arrytags[2] == $nd_tag || $arrytags[2] == $rd_tag || $arrytags[1] == $st_tag || $arrytags[1] == $nd_tag || $arrytags[1] == $rd_tag || $arrytags[0] == $st_tag || $arrytags[0] == $nd_tag || $arrytags[0] == $rd_tag) {?>
 			<?php if($value2 != $rd_tag && $value2 != $nd_tag && $value2 != $st_tag && $value['ID'] != $id) {?>
@@ -141,7 +133,6 @@
 			<?php } ?>	
 			<?php } ?>	
 		<?php } ?>	
-		<!-------------------------------------------------------->
 		<?php if($i > 3 && 1 <= strpos($value['pic_tag'],' ')) {?>
 			<?php if($arrytags[1] == $st_tag || $arrytags[1] == $nd_tag || $arrytags[0] == $st_tag || $arrytags[0] == $nd_tag) {?>
 			<?php if($value2 != $st_tag && $value2 != $nd_tag && $value['ID'] != $id) {?><!-- 单数  -->
@@ -163,14 +154,12 @@
 		<?php } ?>	
 		<?php } ?>
 		<?php } ?>
-		<!-------------------------------------------------------->
-				<?php } ?>														
+				<?php } ?>
 		<!--
 				<b><?php echo '^'.$value['pic_tag'] ?></b>
-		-->						 
+		-->
 				<?php } ?>
-				<?php } ?>			
-		<!-------------------------------------------------------->
+				<?php } ?>
 		
 					</h5>
 					<label style="color: #ff5f83;" class="icon-list-alt">标签：</label>
@@ -217,7 +206,7 @@
 						}
 						//area项失去焦点的时候：
 						function onblurtextarea(){
-							var obj = document.getElementById("text");								
+							var obj = document.getElementById("text");
 								//alert(obj.value);
 								if(obj.value=="")
 								{obj.innerHTML="请留言!	";}
@@ -381,7 +370,6 @@
 						<li>
 							<div style="background: #EEEEEE" >
 							<a type="button" onClick="reload();focus(#suiji)" style="width: 216px;font-weight:bold;line_hight:24px" href="#" class="btn btn-default1 btn-circle"><label style="hight:auto;font-size:24px" class="icon-refresh"></label></a>							
-	<!-- ----------------------------------------------------------------------------- -->
 							<script src="<?php echo base_url('dist/js/jQuery.js') ?>"></script>
 
 
@@ -719,7 +707,6 @@
 							</script>
 							</div>
 						</li>
-	<!-- ----------------------------------------------------------------------------- -->		
 						<li><b style="color: #ff5f83;">今日热门推荐</b></li>
 						<li>
 						<style>

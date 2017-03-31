@@ -6,7 +6,7 @@
 		        <a class="register" href="<?php echo site_url().'register' ?>" target="_blank"><a type="button" class="btn btn-success btn-circle navbar-btn" href="<?php echo site_url().'register' ?>">注 册</a></a>
 		        <a class="ask" href="<?php echo site_url().'login' ?>" target="_blank"><a type="button" style="margin-leftt:440px;" class="btn btn-success btn-circle navbar-btn" href="<?php echo site_url().'login' ?>">登 录</a></a>
 		    </div>
-		    <div class="close"><b style="color: #585858;">×</b></div>  
+		    <div class="close" style="left:92%;"><b style="color: #585858;">×</b></div>  
 		</div>
 	<script type="text/javascript">
 		$(function(){
