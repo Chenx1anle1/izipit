@@ -1,12 +1,12 @@
 <div class="jumbotron">
 <div class="container">
 	<table class="table table-striped table-hover" style="border-spacing: 0px;">
-		<thead style="border-spacing: 0px;">
+		<thead style="border-spacing: 0px;border-style: none">
 			<tr>
-	        	<th style="color: #ff5f83">前50名活跃用户TopUSer</th>
+	        	<th style="color: #ff5f83;border-style: none">前50名活跃用户TopUSer</th>
 	        </tr>
 		</thead>
-		<thead style="border-spacing: 0px;">
+		<thead style="border-spacing: 0px;border-style: none">
 			<tr>
 	        	<th style="color: #ff5f83">Top.1</th>
 	        	<th style="color: #ff5f83">Top.2</th>
@@ -16,9 +16,9 @@
 
 	        </tr>
 		</thead>
-		<tbody style="border-spacing: 0px;">
-		<div class="row" style="margin-top: 0px;">
-		<div class="col-xs-2" style="margin-top: 0px;">
+		<tbody style="border-spacing: 0px;border-style: none">
+		<div class="row" style="margin-top: 0px;border-style: none">
+		<div class="col-xs-2" style="margin-top: 0px;border-style: none">
 		   			
            <?php foreach ($image as $key=>$item){ ?> 	
 			<?php
@@ -30,10 +30,10 @@
 			  }
 			?>
 			<?php if($key % 5 == 0){?>
-			<tr>
+			<tr style="border-style: none">
 			<?php } ?>
-			<td>
-				<a href="<?php echo base_url('user/index') . '/' . $item['user_login'] ?>" style="float:left;padding: 0px 0px;">
+			<td style="border-style: none">
+				<a href="<?php echo base_url('user/picture') . '/' . $item['user_login'] ?>" style="float:left;padding: 0px 0px;">
 					<img src="<?php echo $userpic ?>" class="img-circle" style="height: 35px">
 				    <?php if($item['user_login'] != $this->session->userdata('Username')) { ?>
 					

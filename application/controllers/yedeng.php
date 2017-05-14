@@ -30,6 +30,25 @@ class yedeng extends CI_Controller {
 	}
 
 	public function index() {
+// 添加自动提交
+            $urls = array(
+                'http://www.izipit.top/',
+                'http://www.izipit.top/yedeng',
+            );
+            $api = 'http://data.zz.baidu.com/urls?site=www.izipit.top&token=hnAoDQvgGcpcGo5s&type=mip';
+            $ch = curl_init();
+            $options =  array(
+                CURLOPT_URL => $api,
+                CURLOPT_POST => true,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POSTFIELDS => implode("\n", $urls),
+                CURLOPT_HTTPHEADER => array('Content-Type: text/plain'),
+            );
+            curl_setopt_array($ch, $options);
+            $result = curl_exec($ch);
+            // echo $result;
+
+
 		$offset = $this->input->get('page')?:0;
 		$uid_key = $this->input->get('uid')?:0;
 		$this->head['title'] = "夜灯-" . $this->title;
@@ -41,6 +60,10 @@ class yedeng extends CI_Controller {
       	$this->load->view('mt_yedeng.php', array('offset'=>$offset, 'total'=>$all, 'uid_key'=>$uid_key));
       	
       	$this->load->view('default/mt_footer.php');
+	}
+
+	public function howto() {
+		$this->load->view('mt_howto.php');
 	}
 
 	public function curl_list() {
@@ -59,25 +82,9 @@ class yedeng extends CI_Controller {
 		echo $output = curl_exec($ch) ; 
 	}
 
-	public function save_data () {
-		if ($_POST['url'] != '') {
-			$data = [
-				'mid' => $_POST['id'],
-				'title' => $_POST['title'],
-				'time' => $_POST['time'],
-				'url' => $_POST['url'],
-				'lrc' => '',
-				'up_id' => $_POST['uid']?:3
-			];
-			$this->db->insert('yedeng', $data);
-			$insert_mid = $this->db->insert_id();
-		}
-        redirect(base_url().'yedeng', 'refresh');
-	}
-
 	function get_that_one()
 	{
-		$data = $this->db->select('ID,pic_uuid,pic_name,pic_url,pic_text,pic_type,pic_tag,pic_user,pic_collect,pic_like,pic_share,pic_view,pic_status,pic_datetime')->from('picture')->where(array('id >'=>1634, 'id <='=>1636))->get()->result_array();
+		$data = $this->db->select('ID,pic_uuid,pic_name,pic_url,pic_text,pic_type,pic_tag,pic_user,pic_collect,pic_like,pic_share,pic_view,pic_status,pic_datetime')->from('picture')->where(array('id >='=>1841, 'id <='=>1843, 'id !='=>1842))->get()->result_array();
 		return $data;
 	}
 
@@ -112,43 +119,21 @@ class yedeng extends CI_Controller {
       return $query->result_array();
     }
 
-	function _get_cbb_list($start = 0, $limit = 5)
+
+	function _get_cbb_list($start = 0, $limit = 15)
 	{
-		$ch = curl_init("http://bk2.radio.cn/mms4/videoPlay/getMorePrograms.jspa?programName=财经夜读&start=".$start."&limit=".$limit."&channelId=15&callback=json&_=1488041789251") ;  
+		$ch = curl_init("http://111.202.49.48/pcpages/searchs/livehistory?channelname=2&name=520843&callback=jQuery112205783065994457746_1493190229995&start=".$start."&rows=".$limit."&_=1493190229999");
+		// $ch = curl_init("http://bk2.radio.cn/mms4/videoPlay/getMorePrograms.jspa?programName=财经夜读&start=".$start."&limit=".$limit."&channelId=15&callback=json&_=1488041789251") ;  
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回  
 		curl_setopt($ch, CURLOPT_BINARYTRANSFER, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回  
-		$output = curl_exec($ch) ; 
-		//$output = json_decode($output, true);
-		//json({"total":1404,"programs":[{"programName":"财经夜读_2017-02-26","creationTime":"2017-02-25","programId":636928},{"programName":"财经夜读_2017-02-25","creationTime":"2017-02-25","programId":636560}]})
-		$output = substr($output, 5, -1);
-		$output = json_decode($output, true);
+		$output = curl_exec($ch);
+		$output = serialize($output);
+
+		$output = str_replace(')', '(', $output);
+		$output = explode('(', $output);
+		$output = json_decode($output[1], true);
+		// var_dump($output);die;
 		return $output;
-	}
-
-	private function _get_diff($offset = 0, $uid = 0, $output = array(), $ids = array(), $start = 0, $limit = 5)
-	{
-		$arr_list = array();
-
-		foreach ($output['programs'] as $key => $val) {
-			if (!in_array($val['programId'], $ids)) {
-				$arr_list[$key]['title'] = $val['programName'];
-				$arr_list[$key]['author'] = '经济之声';
-				$arr_list[$key]['id'] = $val['programId'];
-				$arr_list[$key]['uptime'] = $val['creationTime'];
-				$arr_list[$key]['url'] = "http://bk2.radio.cn/mms4/videoPlay/getVodProgramPlayUrlJson.jspa?programId=".$val['programId']."&programVideoId=0&videoType=PC&terminalType=515104503&dflag=1";
-				$arr_list[$key]['pic'] = 'http://www.izipit.top/upload/user/18ca38041958081b8e966faac5c803be_3.jpg';
-				$arr_list[$key]['lrc'] = 'http://www.izipit.top/dist/js/player/c.lrc';
-			}
-		}
-		if (empty($arr_list)) {
-			// if (($start+5)<15) {
-				$this->listinfo($offset, $uid, $start+5, $limit);
-			// } else {
-				// return array();				
-			// }
-		} else {
-			return $arr_list;
-		}
 	}
 
 	public function remove_love($uid = 0, $mid = 0)
@@ -216,8 +201,11 @@ class yedeng extends CI_Controller {
 		echo json_encode($jsonStr);
 	}
 
-	public function listinfo($offset = 0, $uid = 0, $start = 0, $limit = 5) {
+	public function listinfo($offset = 0, $uid = 0, $start = 0, $limit = 20) {
 		$output = $this->_get_cbb_list($start, $limit);
+		$output = $output['passprogram'];
+		// var_dump($output);die;
+		$this->save_data($output);
 		if( $this->session->userdata('online') && $uid > 0 ) {
 			$user_id = $this->session->userdata('id');
 		} else {
@@ -240,29 +228,31 @@ class yedeng extends CI_Controller {
 				 ->where(array('mid !='=>784533));
 		$user_id && $this->db->like(array('love_ids'=>$user_id.','));
 		$this->db->order_by('time desc, title desc');
-		$this->db->limit(5,$offset);
+		$this->db->limit(10,$offset);
 		$data_db_list = $this->db->get()->result_array();
 		$album = array();
 		$heart = '<i style="float:left;color:#ff8080" id="heart" class="icon-heart"></i><span>';
+
 		foreach ($data_db_list as $key => $val) {
 			$mid_input = '</span><input type="hidden" value="'.$val['mid'].'">';
 			if ($this->session->userdata('id') && strpos($val['love_ids'], $this->session->userdata('id').',')) {
-				$album[$key]['author'] = '经济之声'.$mid_input.$heart;
+				$album[$key]['author'] = '财经夜读'.$mid_input.$heart;
 			} else {
-				$album[$key]['author'] = '经济之声'.$mid_input;
+				$album[$key]['author'] = '财经夜读'.$mid_input;
 			}
+			$album[$key]['music_id'] = $val['mid'];
 			$album[$key]['title'] = $val['title'];
 			$album[$key]['url'] = $val['url'];
 			$album[$key]['pic'] = 'http://www.izipit.top/upload/user/18ca38041958081b8e966faac5c803be_3.jpg';
 			$album[$key]['lrc'] = 'http://www.izipit.top/dist/js/player/c.lrc';
 		}
-		$arr_list = $this->_get_diff($offset, $user_id, $output, $ids, $start, $limit);
+		// $arr_list = $this->_get_diff($offset, $user_id, $output, $ids, $start, $limit);
+		$arr_list = [];
 
-
-		if (!empty($arr_list)) {
 			$ArrAlbum = array();
 			$this_music = $this->db->select('*')->from('yedeng')->where(array('mid'=>784533))->get()->row_array();
 			$new = [
+						'music_id'=>'784533',
 			            'title'=>'secret base~君がくれたもの~',
 			            'author'=>'123',
 			            'url'=>'http://devtest.qiniudn.com/secret base~.mp3',
@@ -276,9 +266,114 @@ class yedeng extends CI_Controller {
 			array_push($ArrAlbum, $new);
 			$merge = array_merge($ArrAlbum, $album);
 			$ArrOut = ($offset==0)?$merge:$album;
-			echo json_encode(array('album'=>$ArrOut, 'list'=>$arr_list, 'user_id'=>$user_id));
+		// 获取音乐id数组
+		$music_ids = array();
+		foreach ($ArrOut as $val) {
+			$music_ids[] = $val['music_id'];
+		}
+
+		if (!empty($arr_list)) {
+			echo json_encode(array('album'=>$ArrOut, 'ids' => $music_ids, 'list'=>[], 'user_id'=>$user_id));
+		} else {
+			echo json_encode(array('album'=>$ArrOut, 'ids' => $music_ids, 'list'=>array(), 'user_id'=>$user_id));
 		}
 	}
+
+	public function load_article($mid, $uid = 0) {
+			$this->db->select('ap.*, y.title m_title')
+					 ->from('article_pice ap')
+					 ->join('yedeng y','ap.mc_id = y.mid')
+					 ->where(['ap.mc_id'=>$mid])
+					 ->order_by('uptime asc, id asc');
+			$uid && $this->db->where(['ap.uid'=>$uid]);
+			$all = $this->db->get()->result_array();
+$count = count($all)+1;
+$width = ($count+1)*900;
+$html="<!--留言 {$mid}--><div id='id_{$mid}' class='helpcenter_rightInIn'>";
+$bottom = "<a class='helpcenter_bBL'><</a>";
+$botom_end = "<a class='helpcenter_bBR'>></a>";
+if (!empty($all)) {
+	$k = 0;
+	foreach ($all as $key => $val) {
+		$key = $key + 1;
+		$html .= "<!-- 图文{$key} --><div class='helpcenter_rightIns helpcenter_rightInsOn'><div class='helpcenter_rightInL'><h2><span>{$val['title']} </span><label style='font-size:12px;'>({$val['m_title']}期)</label><span class='helpcenter_span1'>{$key}</span><span>/</span><span>{$count}</span></h2>{$val['txt']}</div></div>";
+		if ($key == 1) {
+			$bottom = $bottom."<a class='helpcenter_bB helpcenter_bBon'>{$key}</a>";
+		} else {
+			$bottom = $bottom."<a class='helpcenter_bB'>{$key}</a>";
+		}
+		$k = $key+1;
+	}
+}
+$html .= "<from><div class='helpcenter_rightIns helpcenter_rightInsOn'><div class='helpcenter_rightInL'><h2><span>留下你的文字</span></h2><div class='m'><input class='music_title' type='txt' name='title' style='width:848px'  placeholder='请输入标题' required /><textarea class='txt txt-editor' id='content' name='content'></textarea><input type='submit' value='提 交' onclick='add({$mid})' class='btn-submit btn btn-primary'></div></div></div></form>";
+$bottom .= "<a class='helpcenter_bB'>{$count}</a>";
+$data['bottom'] = $bottom.$botom_end;
+$data['html'] = $html;
+// var_dump($data);die;
+echo json_encode($data);
+	}
+
+	public function add_article($mid) {
+		if( $this->session->userdata('online')) {
+			$uid = $this->session->userdata('id');
+			$data = array(
+				'uid' => $uid,
+				'mc_id' => $mid,
+				'title' => $_POST['title'],
+				'txt' => $_POST['txt'],
+				'uptime' => time(),
+				);
+			$this->db->insert('article_pice', $data);
+			$insert_id = $this->db->insert_id();
+			$res['status']=$insert_id;
+			$res['msg']='提交成功';
+			echo json_encode($res);
+		} else {
+			$res['status']=0;
+			$res['msg']='请登录后再提交';
+			echo json_encode($res);
+		}
+	}
+
+	public function save_data ($save) {
+		if( $this->session->userdata('online')) {
+			$user_id = $this->session->userdata('id');
+		} else {
+			$user_id = 0;
+		}
+
+		$all = $this->db->select('*')
+				 ->from('yedeng')
+				 ->get()
+				 ->result_array();
+		// var_dump($all);die;
+		foreach ($all as $val) {
+			$ids[] = $val['mid'];
+			$date[] = $val['time'];
+		}
+		// var_dump($ids);die;
+		// var_dump($date);die;
+		$insert_id = 0;
+		foreach ($save as $val) {
+				if (!in_array($val['display_id'], $ids)) {
+					if (!in_array($val['broadcast_date'], $date)) {
+						$data = [
+							'mid' => $val['display_id'],
+							'title' => $val['broadcast_date'],
+							'time' => $val['broadcast_date'],
+							'url' => 'http://'.$val['stream_domain1'].$val['stream_url1'],
+							'lrc' => '',
+							'up_id' => $user_id?:3
+						];
+						$this->db->insert('yedeng', $data);
+						$insert_mid = $this->db->insert_id();
+					}
+				}
+		}
+		$status = $insert_id ? 1 : 0;
+		return $status;
+	}
+
 }
 /* End of file xixi.php */
 /* Location: ./application/controllers/xixi.php */

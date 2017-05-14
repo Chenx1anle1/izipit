@@ -52,7 +52,7 @@ if ( ! function_exists('form_open'))
 		// If an action is not a full URL then turn it into one
 		if ($action && strpos($action, '://') === FALSE)
 		{
-			$action = $CI->config->site_url($action);
+			$action = $CI->config->site_url().$action;
 		}
 
 		// If no action is provided then set to the current url

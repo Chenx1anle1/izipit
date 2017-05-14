@@ -3,7 +3,7 @@
 
 <!-- 这里是折叠打开js -->
 	<div id="body" class="container top">
-		<div class="row">
+		<div class="row layout">
 			
 			<div class="col-xs-1 col-sm-8">
 				<div class="maincontent">
@@ -177,8 +177,8 @@
 
 							foreach ($tag as $value) {
 						?>
-						<a href="<?php echo base_url('tag/'.$value) ?>" class="btn btn-primary border btn-sm">
-							<span class="label label-info"><?php echo $value ?></span>
+						<a style="padding: 4px 2px" href="<?php echo base_url('tag/'.$value) ?>" class="border btn-sm">
+							<span style="font-size: 90%" class="label label-info"><?php echo $value ?></span>
 						</a>
 					<?php } ?>
 					</h5>
@@ -278,7 +278,7 @@
 							<a type="button" style="position: fixed; top: 15%; right: 5px;font-size: 30px;min-width:70px;height:8%;" class="btn btn-default1 btn-circle" onClick="window.close()" href="#"><i class="icon-off"></i></a>
 	
 						<?php if ($pres) { ?>
-							<a type="button" style="position: fixed; bottom: 5px; left: 5px;font-size: 55px;min-width:70px;height:90%;" class="btn btn-default1 btn-circle" href="<?php echo base_url('view') . '/' . $pres ?>"><i class="icon-chevron-left"></i></a><?php echo nbs(4) ?>
+							<a type="button" style="position: fixed; bottom: 5px; left: 5px;font-size: 55px;min-width:48px;height:90%;" class="btn btn-default1 btn-circle" href="<?php echo base_url('view') . '/' . $pres ?>"><i class="icon-chevron-left"></i></a><?php echo nbs(4) ?>
 						<?php } ?>
 						<?php if ($next <= $this->pic_model->max_id()) { ?>
 							<a type="button" style="position: fixed; bottom: 5px; right: 5px;font-size: 55px;min-width:70px;height:65%;" class="btn btn-default1 btn-circle" href="<?php echo base_url('view') . '/' . $next ?>"><i class="icon-chevron-right"></i></a>
@@ -288,13 +288,13 @@
 							<?php if( $this->session->userdata('online')) { ?>
 						<!--用户判断 -->
 				
-							<a style="cursor: pointer;" onClick="Love('<?php echo $uuid ?>')"><i class="icon-heart"></i><span id="collect"> <?php if($is_love) { echo "取消收藏"; } else { echo "收藏"; } ?> <?php echo $collect ?></span></a><?php echo nbs(4) ?>
+							<a style="cursor: pointer;" onClick="Love('<?php echo $uuid ?>')"><i class="icon-heart"></i><span id="collect"> <?php if($is_love) { echo "Cancel"; } else { echo ""; } ?> <?php echo $collect ?></span></a><?php echo nbs(4) ?>
 						    <?php } ?>
-							<a href="<?php echo base_url('xixi/downImage/' . $uuid) ?>" onClick="Down()"><i class="icon-cloud-download"></i> 下载 <span id="download"><?php echo $share ?></span></a><?php echo nbs(4) ?> 
+							<a href="<?php echo base_url('xixi/downImage/' . $uuid) ?>" onClick="Down()"><i class="icon-cloud-download"></i> <span id="download"><?php echo $share ?></span></a><?php echo nbs(4) ?> 
 							<?php if( $this->session->userdata('online')) { ?>
 						<!--用户判断 -->
 								
-							<a style="cursor: pointer;" onClick="Like('<?php echo $uuid ?>')"><i class="icon-thumbs-up"></i><span id="like"> <?php if($is_like) { echo "取消赞"; } else { echo "赞"; } ?> <?php echo $like ?></span></a><?php echo nbs(4) ?>
+							<a style="cursor: pointer;" onClick="Like('<?php echo $uuid ?>')"><i class="icon-thumbs-up"></i><span id="like"> <?php if($is_like) { echo "Cancel"; } else { echo ""; } ?> <?php echo $like ?></span></a><?php echo nbs(4) ?>
 						    <?php } ?>
 
 						</li>
@@ -316,8 +316,8 @@
 												$picount = $this->album_model->picturenum($value['ID']);	
 										?>
 								  		
-										<option value="<?php echo $value['ID'] ?>">
-											<?php echo $value['album_name'] ?> (<?php echo $picount ?>)
+										<option style="color: #ff5f83;background-color: #f8f8f8;" value="<?php echo $value['ID'] ?>">
+											<?php echo $value['album_name']; ?> (<?php echo $picount ?>)
 										</option>
 								  		<?php } ?>
 									</select>
@@ -368,7 +368,7 @@
 						
 						<div><label><b style="color: #ff5f83;">随机推荐</b></label></div>
 						<li>
-							<div style="background: #EEEEEE" >
+							<div class="auto-fixed" style="background: #EEEEEE" >
 							<a type="button" onClick="reload();focus(#suiji)" style="width: 216px;font-weight:bold;line_hight:24px" href="#" class="btn btn-default1 btn-circle"><label style="hight:auto;font-size:24px" class="icon-refresh"></label></a>							
 							<script src="<?php echo base_url('dist/js/jQuery.js') ?>"></script>
 
@@ -698,13 +698,15 @@
 									</ul>
 								</div>
 
-
 							<script>
 								$(document).ready(function(){	
 									$("#funnyNewsTicker3").funnyNewsTicker({
 									width:"70%",itemheight:250,infobarvisible:false,pagenavi:false,timer:1500,itembgcolor:"#EEEEEE",bordercolor:"#EEEEEE"});	
 								});	
 							</script>
+							<style>
+								.funnyNewsTicker{ -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;}
+							</style>
 							</div>
 						</li>
 						<li><b style="color: #ff5f83;">今日热门推荐</b></li>
@@ -783,6 +785,10 @@
 	  </div>
 	</div>
 </div>
+<style>
+	.fixed { position: fixed; width:40%; top:50px; z-index: 100; }
+</style>
+<script src="<?php echo base_url('dist/js/fixed.js') ?>"></script>
 <script src="<?php echo base_url('dist/js/bootstrap-tagsinput.min.js') ?>"></script>
 <script>
     $('#tag').tagsinput({
@@ -1106,9 +1112,9 @@
 		$.get("<?php echo base_url('xixi/like') . '/' ?>" + uuid,function(data){
 			$.each($.parseJSON(data), function(idx, obj) {
 				if (obj.is_like) {
-					$('#like').html(" 取消赞 " + obj.like);
+					$('#like').html("Cancel" + obj.like);
 				} else {
-					$('#like').html(" 赞 " + obj.like);
+					$('#like').html("" + obj.like);
 				}
 			});
 		});
@@ -1117,9 +1123,9 @@
 		$.get("<?php echo base_url('xixi/love') . '/' ?>" + uuid,function(data){
 			$.each($.parseJSON(data), function(idx, obj) {
 					if (obj.is_love) {
-						$('#collect').html(" 取消收藏 " + obj.love);
+						$('#collect').html("Cancel" + obj.love);
 					} else {
-						$('#collect').html(" 收藏 " + obj.love);
+						$('#collect').html("" + obj.love);
 					}
 			});
 			

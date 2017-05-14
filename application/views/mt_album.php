@@ -84,20 +84,20 @@
 					album_div.append(info_div);
 
 					var info_title = $('<h4 style="margin-top:0px;color:#ff5f83;font-size:6px">');
-					info_title.append('<label class="icon-list-alt">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>'+obj.albumName+' 收录 '+obj.albumNum+' 张');
+					info_title.append('<label class="icon-list-alt">&nbsp&nbsp</label>'+obj.albumName+'&nbspCollect '+obj.albumNum+' 张');
 					info_title.attr('title','专辑'+obj.albumName)
 					info_div.append(info_title);//结束以父盒子<div>最大级+自己<h4>
 
 /*给创建者一个连接<a href="<?php echo base_url('user/index/'.$user) ?>"><?php echo $user ?></a>*/
 
 					var user_a = $('<a>');
-					user_a.attr('href', 'user/index/' + obj.albumUser);
+					user_a.attr('href', 'user/collect/' + obj.albumUser);
 					user_a.attr('title', obj.albumUser);
 					info_div.append(user_a);//结束以父盒子<div>最大级+自己<a>
 
 					var info_user = $('<h5 style="margin-bottom:0px;color:#ff5f83;font-size:6px">');
 					
-					info_user.append('<label class="icon-user">&nbsp&nbsp</label>'+'创建者：' + objalbumUser2);
+					info_user.append('<label class="icon-user">&nbsp&nbsp</label>'+'original：' + objalbumUser2);
 					user_a.append(info_user);//结束以父盒子<a>最大级+自己<h5>
 
 					
@@ -135,7 +135,8 @@
 					t_div.append(pic001_div);
 
 					var pic001_a = $('<a>');
-					pic001_a.attr('href', obj.albumPic001);
+					console.log(obj);
+					pic001_a.attr('href', obj.p1u);
 					pic001_a.attr('title', obj.albumName);
 					pic001_a.attr('rel','zoom1');
 					pic001_a.attr('style','outline: 0px;');
@@ -158,7 +159,7 @@
 					t_div.append(pic002_div);
 
 					var pic002_a = $('<a>');
-					pic002_a.attr('href', obj.albumPic002);
+					pic002_a.attr('href', obj.p2u);
 					pic002_a.attr('title', obj.albumName);
 					pic002_a.attr('rel','zoom1');
 					pic002_a.attr('rev', obj.albumPic002);
@@ -180,7 +181,7 @@
 					t_div.append(pic003_div);
 
 					var pic003_a = $('<a>');
-					pic003_a.attr('href', obj.albumPic003);
+					pic003_a.attr('href', obj.p3u);
 					pic003_a.attr('title', obj.albumName);
 					pic003_a.attr('rel','zoom1');
 					pic003_a.attr('rev', obj.albumPic003);

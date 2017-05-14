@@ -15,9 +15,7 @@
     <!-- <link href="http://cdn.bootcss.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('dist/css/signin.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('dist/css/upload.css') ?>">
-    <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url('dist/css/normalize.css') ?>"> -->
     <!-- <link href="http://cdn.bootcss.com/normalize/3.0.1/normalize.min.css" rel="stylesheet"> -->
-	<script type="text/javascript" src="<?php echo base_url('dist/js/swfobject.js') ?>"></script>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('dist/css/lightbox.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('dist/css/bootstrap-tagsinput.css') ?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('dist/css/funnyNewsTicker.css') ?>">
@@ -44,9 +42,26 @@
 	</script>
 
     <style>
+      body{ -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;}
       *::selection{color:#fff;background:#f36;}
       *::-moz-selection{color:#fff;background:#f36;}
       *::-webkit-selection{color:#fff;background:#f36;}
+      option::selection{color:#fff;background:#fff;}
+      option::-moz-selection { color:#f60; background-color:#fff;}
+      option::-webkit-selection{color:#fff;background:#fff;}
+      .navbar-right .menu-hd { position:relative; z-index:100; }
+      /*.navbar-right li a { display:block; padding:0 10px; }*/
+      .navbar-right .menu-hd a {border-left:1px solid #f5f5f5; border-right:1px solid #f5f5f5; }
+      .navbar-right .menu-hd:hover .menu-bd { display:block; }
+      .navbar-right .menu-bd { display:none; position:absolute; left:1px; top:50px; width:90px; border-bottom:1px solid #eee; background-color:#fff; text-align:left; z-index:10001; box-shadow:1px 2px 3px rgba(0,0,0,.1); }
+      .navbar-right .menu-bd img { width:200px; height:200px; }
+      .navbar-right .code { width:200px; }
+      .navbar-right .menu-hd1 a {border-left:1px solid #f5f5f5; border-right:1px solid #f5f5f5; }
+      .navbar-right .menu-hd1:hover .menu-bd1 { display:block; }
+      .navbar-right .menu-bd1 { display:none; position:absolute; left:-200px; top:50px; width:90px; border-bottom:1px solid #eee; background-color:#fff; text-align:right; z-index:10001; box-shadow:1px 2px 3px rgba(0,0,0,.1); }
+      .navbar-right .menu-bd1 img { width:400px; height:500px; }
+      .navbar-right .code1 { width:400px; }
+
     </style>
   </head>
   <body>
@@ -138,8 +153,9 @@
 				</a>
 				</li>
 				<li>
-					<a style="color: #ff5f83" href="<?php echo site_url().'flashwall' ?>">
-					<b><i>imagewall</i></b>
+					<a style="color: #ff5f83" href="<?php echo site_url().'yedeng' ?>">
+					<b>夜灯</b>
+          <!-- flashwall -->
 				</a>
 				</li>
 				<!--
@@ -150,6 +166,9 @@
 				</li>
 				-->
 		</ul>
+          <?php
+            if (!isset($search)){$search = '';}
+          ?>
           <div class="navbar-form navbar-left" role="search">
             <div class="form-group">
               <input type="text" id="search" value="<?php echo $search ?>" class="form-control border" placeholder="Search" onkeypress="EnterSearch()">
@@ -158,12 +177,23 @@
           </div>
 
           <ul class="nav navbar-nav navbar-right">
-			
+            <li class="menu-hd">
+            <a style="color: #ff5f83;font-size：10px;" href=""><b>WeChat</b></a>
+            <div class="menu-bd code">
+              <img src="<?php echo base_url('/dist/image/code_wx.jpg') ?>" alt="我的不说微信:zipit21087591">
+            </div>
+            </li>
+            <li class="menu-hd1">
+            <a style="color: #ff5f83;font-size：10px;" href=""><b>show me</b></a>
+            <div class="menu-bd1 code1">
+              <img src="<?php echo base_url('/dist/image/code_wx.jpg') ?>" alt="我的不说微信:zipit21087591">
+            </div>
+            </li>
          <?php if( $this->session->userdata('online') ) { ?>
             <?php $username = $this->session->userdata('Username'); ?>
             <?php $myletter = $this->letter_model->myletter($username); ?>
-			
-			<?php
+      
+      <?php
               $picture = 'upload/user/' . $this->user_model->picture($username) . '_3.jpg';
               if (file_exists($picture)) {
                 $userpic = base_url('upload/user/' . $this->user_model->picture($username) . '_3.jpg');
@@ -183,7 +213,8 @@
                 <?php } else { ?>
 					<ul class="nav navbar-nav navbar-left">
 					  <li>
-						<a style="color: #ff5f83" href="<?php echo base_url().'user/collect/' . $username ?>">
+            <a style="color: #ff5f83" href="<?php echo base_url().'popular_mypic' ?>">
+						<!--<a style="color: #ff5f83" href="<?php echo base_url().'user/collect/' . $username ?>">-->
 							<label class="icon-picture" style="font_size:10px"></label>
 							<b><i>MyCollection</i></b>
 						</a>
@@ -191,7 +222,7 @@
 					</ul>
                 <?php } ?>
             <li>
-				<a href="<?php echo base_url('user/index') . '/' . $username ?>" style="float:left;padding: 9px 10px;">		
+				<a href="<?php echo base_url('user/collect') . '/' . $username ?>" style="float:left;padding: 9px 10px;">		
 				<label class="icon-user icon-large"><?php echo '&nbsp&nbsp&nbsp&nbsp'.$username ?>&nbsp&nbsp<label class="icon-leaf" style="color: #ff5f83"></label>&nbsp</label>
 					<img src="<?php echo $userpic ?>" class="img-circle">
 				</a></li>
@@ -209,49 +240,49 @@
 				</li>
                 <li class="divider"></li>
 
+                <?php } ?>
                 <li>
-                	<a href="<?php echo site_url().'upload' ?>" style="color: gray;">
-						<i class="icon-upload-alt"  style="color: #0000ff"></i>
-						〓本地图片上传
-					</a>
-				</li>
+                  <a href="<?php echo site_url().'upload' ?>" style="color: gray;">
+            <i class="icon-upload-alt"  style="color: #0000ff"></i>
+            〓本地图片上传
+          </a>
+        </li>
                 <li class="divider"></li>
 
-                <?php } ?>
-				<li><a style="color: #ff5f83" href="<?php echo site_url().'album2' ?>">
-					<label class="icon-list-alt" style="font_size:10px"></label>
-					<label class="header" style="font_size:10px;color:gray">〓my album</label>					  
-				</a></li>
+  				<li><a style="color: #ff5f83" href="<?php echo site_url().'album2' ?>">
+  					<label class="icon-list-alt" style="font_size:10px"></label>
+  					<label class="header" style="font_size:10px;color:gray">〓my album</label>					  
+  				</a></li>
                 <li class="divider"></li>
                 <li>
-					<a href="<?php echo base_url('comment') ?>" style="color: gray;">
-						<i class="icon-envelope" style="color: #cdcdcd"></i>
-						〓我的收到的评论 
-						<strong style="color: #ff6262;"><i><label class="fa-bell"><label><?php if ($myletter) echo $myletter ?></i></strong>
-					</a>
-				</li>
+        					<a href="<?php echo base_url('comment') ?>" style="color: gray;">
+        						<i class="icon-envelope" style="color: #cdcdcd"></i>
+        						〓我的收到的评论 
+        						<strong style="color: #ff6262;"><i><label class="fa-bell"><label><?php if ($myletter) echo $myletter ?></i></strong>
+        					</a>
+        				</li>
                 <li class="divider"></li>
 				
                 <li><a data-toggle="modal" data-target="#albumModal" style="cursor: pointer;color: gray">
-				<i class="icon-list-alt" style="color: #ff66ff"></i>
-				〓创建自己的专辑</a>
-				</li>
+                <i class="icon-list-alt" style="color: #ff66ff"></i>
+                〓创建自己的专辑</a>
+                </li>
                 
                 <li class="divider"></li>
                 <li><a href="<?php echo site_url().'logout' ?>"style="color: gray">
-				<i class="icon-off" style="color: #ff3535"></i>
-				〓退出登录</a>
-				</li>
+                <i class="icon-off" style="color: #ff3535"></i>
+                〓退出登录</a>
+                </li>
               </ul>
             </li>
             <li><a></a></li>
             <?php } else { ?>
 
 
-            <?php $username = "guest"; ?>						
-            <a class="icon-leaf" style="color: #c0c0c0" href="<?php echo site_url().'login' ?>"></a>
-            <a type="button" class="btn btn-success btn-circle navbar-btn" href="<?php echo site_url().'register' ?>">注册</a>
-            <a type="button" style="margin-right:40px;" class="btn btn-success btn-circle navbar-btn" href="<?php echo site_url().'login' ?>">登录</a>
+            <?php $username = "guest"; ?>
+            <a class="icon-leaf" style="float:left; color: #c0c0c0" href="<?php echo site_url().'login' ?>"></a>
+            <a type="button" style="float:left;" class="btn btn-success btn-circle navbar-btn" href="<?php echo site_url().'register' ?>">注册</a>
+            <a type="button" style="float:left;margin-right:40px;" class="btn btn-success btn-circle navbar-btn" href="<?php echo site_url().'login' ?>">登录</a>
             <?php } ?> 
           </ul>
         </div>

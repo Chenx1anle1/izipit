@@ -231,13 +231,15 @@ margin-right: 15px;
 .dropdown-menu-large > li > ul > li {
   list-style: none;
   width: 140px;
+  border-style:none;
+  /*border-bottom-color:#fff;*/
 }
 .dropdown-menu-large > li > ul > li > a {
   display: block;
-  padding: 3px 20px;
+  padding: 0px 0px;
   clear: both;
   font-weight: normal;
-  line-height: 1.428571429;
+  line-height: 1.348571429;
   color: #333333;
   white-space: normal;
 }
@@ -271,10 +273,11 @@ margin-right: 15px;
 .user-details .user-image {position: relative;  z-index: 1; width: 100%; margin-left: 20px; }
 .user-image img { clear: both; margin: auto; position: relative;}
 .user-details .user-info-block {width: 100%; position: absolute; top: 55px; background: rgb(255, 255, 255); z-index: 0; padding-top: 35px;}
-.user-info-block .navigation {float: left; width: 100%; margin-top: 80px; padding: 0; list-style: none; border-bottom: 1px solid #ff5f83; border-top: 1px solid #ff5f83;}
+.user-info-block .navigation {float: left; width: 100%; margin-top: 80px; padding: 0; list-style: none;}
 .navigation li {float: left; margin: 0; padding: 0;}
-.navigation li a {padding: 20px 30px; float: left;}
-.navigation li.active a {background: #ff5f83; color: #fff;}
+.navigation li a {padding: 20px 30px; float: left;color: #777777;}
+.navigation li.active a {color: #FD3163;}
+/*.navigation li.active a {background: #ff5f83; color: #fff;}*/
 
 .album {
   width: 244px;

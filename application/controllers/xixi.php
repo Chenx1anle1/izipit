@@ -27,6 +27,7 @@ class Xixi extends CI_Controller {
 		$this->head['title']       = $this->title;
 		$this->head['keywords']    = $this->keywords;
 		$this->head['description'] = $this->description;
+		$this->load->model('m_log');
 	}
 
 	public function browse()
@@ -42,6 +43,7 @@ class Xixi extends CI_Controller {
 		$data['pictureURL'] = base_url('xixi/images');
 		$this->load->view('mt_index.php',$data);
         $this->load->view('default/mt_footer.php');
+        $this->m_log->log(1,'home', $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], json_encode(func_get_args()));
         $this->browse();
 	}
 
@@ -68,6 +70,7 @@ class Xixi extends CI_Controller {
 		//$this->load->view('mt_index.php',$data);
 		$this->load->view('index3d.html');
         $this->browse();
+        $this->m_log->log(1,'3d', '', json_encode(func_get_args()));
 	}
 	public function popular_like() {   //热门
 		$this->head['title'] = "Top赞图片-" . $this->title;
@@ -179,6 +182,11 @@ class Xixi extends CI_Controller {
 
 	public function images( $page = 1 ) {     //根据记录的发布日期返回所有记录
 		$query = $this->pic_model->pictures( $page );
+		// 打乱数组顺序
+		shuffle($query);
+		// var_dump($query);die();
+		$query = array_slice($query, 0, 10);
+		// print_r($query);die();
 		$this->imageInfo($query);
 	}
 

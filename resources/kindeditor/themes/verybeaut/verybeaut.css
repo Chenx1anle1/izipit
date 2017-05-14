@@ -1,0 +1,75 @@
+/* container */
+.ke-container-verybeaut { border-radius:3px; }
+.ke-statusbar { display:none; }
+.ke-toolbar .ke-outline { border:0 none; }
+.ke-toolbar .ke-separator { height:24px; }
+.ke-toolbar .ke-selected { background:none; }
+.ke-toolbar-icon-url,.ke-toolbar-icon { width:25px; height:25px; background:url(editor.png); }
+.ke-icon-bold { background-position:0 0; }
+.ke-icon-italic { background-position:-24px 0; }
+.ke-icon-underline { background-position:-48px 0; }
+.ke-icon-strikethrough { background-position:-72px 0; }
+.ke-icon-forecolor { background-position:-96px 0; }
+.ke-icon-hilitecolor { background-position:-120px 0; }
+.ke-icon-removeformat { background-position:-144px 0; }
+.ke-icon-fontsize { background-position:-168px 0; }
+.ke-icon-insertunorderedlist { background-position:-192px 0; }
+.ke-icon-insertorderedlist { background-position:-216px 0; }
+.ke-icon-justifyleft { background-position:-240px 0; }
+.ke-icon-justifycenter { background-position:-264px 0; }
+.ke-icon-justifyright { background-position:-288px 0; }
+.ke-icon-emoticons { background-position:-312px 0; }
+.ke-icon-flash { background-position:-336px 0; }
+.ke-icon-image,.ke-icon-multiimage  { background-position:-360px 0; }
+.ke-icon-link { background-position:-384px 0; }
+.ke-icon-fullscreen { background-position:-408px 0; }
+.ke-icon-source { background-position:-454px 0; }
+.ke-icon-myview { background-position:-478px 0; }
+
+.ke-icon-bold:hover { background-position:0 -24px; }
+.ke-icon-italic:hover { background-position:-24px -24px; }
+.ke-icon-underline:hover { background-position:-48px -24px; }
+.ke-icon-strikethrough:hover { background-position:-72px -24px; }
+.ke-icon-forecolor:hover { background-position:-96px -24px; }
+.ke-icon-hilitecolor:hover { background-position:-120px -24px; }
+.ke-icon-removeformat:hover { background-position:-144px -24px; }
+.ke-icon-fontsize:hover { background-position:-168px -24px; }
+.ke-icon-insertunorderedlist:hover { background-position:-192px -24px; }
+.ke-icon-insertorderedlist:hover { background-position:-216px -24px; }
+.ke-icon-justifyleft:hover { background-position:-240px -24px; }
+.ke-icon-justifycenter:hover { background-position:-264px -24px; }
+.ke-icon-justifyright:hover { background-position:-288px -24px; }
+.ke-icon-emoticons:hover { background-position:-312px -24px; }
+.ke-icon-flash:hover { background-position:-336px -24px; }
+.ke-icon-image:hover,.ke-icon-multiimage:hover { background-position:-360px -24px; }
+.ke-icon-link:hover { background-position:-384px -24px; }
+.ke-icon-fullscreen:hover { background-position:-408px -24px; }
+.ke-icon-source:hover { background-position:-454px -24px; }
+.ke-icon-myview:hover { background-position:-478px -24px; }
+
+.ke-selected .ke-icon-bold { background-position:0 -48px; }
+.ke-selected .ke-icon-italic { background-position:-24px -48px; }
+.ke-selected .ke-icon-underline { background-position:-48px -48px; }
+.ke-selected .ke-icon-strikethrough { background-position:-72px -48px; }
+.ke-selected .ke-icon-forecolor { background-position:-96px -48px; }
+.ke-selected .ke-icon-hilitecolor { background-position:-120px -48px; }
+.ke-selected .ke-icon-removeformat { background-position:-144px -48px; }
+.ke-selected .ke-icon-fontsize { background-position:-168px -48px; }
+.ke-selected .ke-icon-insertunorderedlist { background-position:-192px -48px; }
+.ke-selected .ke-icon-insertorderedlist { background-position:-216px -48px; }
+.ke-selected .ke-icon-justifyleft { background-position:-240px -48px; }
+.ke-selected .ke-icon-justifycenter { background-position:-264px -48px; }
+.ke-selected .ke-icon-justifyright { background-position:-288px -48px; }
+.ke-selected .ke-icon-emoticons { background-position:-312px -48px; }
+.ke-selected .ke-icon-flash { background-position:-336px -48px; }
+.ke-selected .ke-icon-image,.ke-selected .ke-icon-multiimage { background-position:-360px -48px; }
+.ke-selected .ke-icon-link { background-position:-384px -48px; }
+.ke-selected .ke-icon-fullscreen { background-position:-432px -48px; }
+.ke-selected .ke-icon-source { background-position:-454px -48px; }
+.ke-selected .ke-icon-myview { background-position:-478px -48px; }
+.ke-dialog-header { padding:5px 10px; background:#f5f5f5; }
+.ke-dialog-icon-close { top:10px; }
+.ke-button-common { height:28px; }
+.ke-button { background:#eee; border:1px solid #ccc; border-radius:3px; }
+.ke-button:hover { border-color:#999; }
+.ke-input-text { height:22px; line-height:22px; }

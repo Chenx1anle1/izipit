@@ -1,0 +1,10 @@
+User-agent:Baiduspider
+Allow:/
+Disallow:/*.jpg$
+Disallow:/*.jepg$
+Disallow:/*.gif$
+Disallow:/*.png$
+Disallow:/*.bmp$
+
+User-agent:*
+Disallow:/

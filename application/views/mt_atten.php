@@ -1,18 +1,12 @@
-<div class="container">
-	<table class="table table-striped table-hover" style="border-spacing: 0px;">
-		<thead style="border-spacing: 0px;">
+<div class="container" style="border-style: none">
+	<table class="table table-striped table-hover" style="border-spacing: 0px;border-style: none">
+		<thead style="border-spacing: 0px;border-style: none">
 			<tr>
-	        	<th style="color: #ff5f83">关注用户AttenU</th>
+	        	<th style="color: #ff5f83;border-style: none">关注用户AttenU</th>
 	        </tr>
 		</thead>
 		<thead style="border-spacing: 0px;">
 			<tr>
-	        	<th style="color: #ff5f83;width:100px">1</th>
-	        	<th style="color: #ff5f83;width:100px">2</th>
-	        	<th style="color: #ff5f83;width:100px">3</th>
-	        	<th style="color: #ff5f83;width:100px">4</th>
-	        	<th style="color: #ff5f83;width:100px">5</th>
-
 	        </tr>
 		</thead>
 		<tbody style="border-spacing: 0px;">

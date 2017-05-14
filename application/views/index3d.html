@@ -7,6 +7,16 @@
 		top: 8em;
 
 	}
+	.heart {
+		font-size: 21px;
+		line-height:25px;
+		text-align:center;
+	}
+	.empty {
+		font-size: 29px;
+		line-height:25px;
+		text-align:center;
+	}
 	#screen {
 		position: absolute;
 		width: 100%;
@@ -46,7 +56,7 @@
 	}
 	#bar .button { 
 		position: absolute;
-		background: #f2f2f2;
+		background: #DCDCDC;
 		width: 20px;
 		height: 20px;
 		cursor: pointer;
@@ -157,10 +167,10 @@ var m3D = function () {
 									if (obj.is_love) {
 										selected.but.title = '已收藏';
 										selected.img.title = '已收藏';
-										selected.but.innerHTML = '■';
+										selected.but.innerHTML = '<div class="heart">❤</div>';
 									} else {
 										selected.but.title = "双击显示中的图片可以·收藏·取消";
-										selected.but.innerHTML = '';
+										selected.but.innerHTML = '<div class="empty">♡</div>';
 										selected.img.title = '';
 									}
 							}
@@ -197,18 +207,19 @@ var m3D = function () {
 									if (tag_name == 'DIV'){
 										console.log(tag_name+'yishoucang');
 										selected.but.title = '已收藏';
-										selected.but.innerHTML = '■';
+										selected.but.innerHTML = '<div class="heart">❤</div>';
 										selected.img.title = '已收藏';
 									}
 									if (tag_name == 'CANVAS'){
 										selected.img.title = '已收藏';
 										selected.but.title = '已收藏';
-										selected.but.innerHTML = '■';
+										selected.but.innerHTML = '<div class="heart">❤</div>';
 									}
 								} else {
 									if (tag_name == 'DIV'){
 										selected.but.title = '未收藏';
 										selected.img.title = '未收藏';
+										selected.but.innerHTML = '<div class="empty">♡</div>';
 									}
 									if (tag_name == 'CANVAS'){
 										selected.img.title = '未收藏';

@@ -65,12 +65,15 @@ class Album extends CI_Controller {
 					switch ($key) {
 						case 0:
 							$pic001 = $this->pic_model->one_thumb($pic_value['picture_id']);
+							$pic_1_url = base_url().'view/'.$pic_value['picture_id'];
 							break;
 						case 1:
 							$pic002 = $this->pic_model->one_thumb($pic_value['picture_id']);
+							$pic_2_url = base_url().'view/'.$pic_value['picture_id'];
 							break;
 						case 2:
 							$pic003 = $this->pic_model->one_thumb($pic_value['picture_id']);
+							$pic_3_url = base_url().'view/'.$pic_value['picture_id'];
 							break;
 						default:
 							break;
@@ -87,7 +90,7 @@ class Album extends CI_Controller {
 				$pic003 = $pic002;
 			}
 
-			$album   = array('me' =>$this->user,'albumID' => $album_id,'albumName' => $album_name,'albumUser' => $album_user, 'albumNum' => $album_num, 'albumCover' => $cover, 'albumPic001' => $pic001, 'albumPic002' => $pic002, 'albumPic003' => $pic003 );
+			$album   = array('me' =>$this->user,'albumID' => $album_id,'albumName' => $album_name,'albumUser' => $album_user, 'albumNum' => $album_num, 'albumCover' => $cover, 'albumPic001' => $pic001, 'p1u' => $pic_1_url, 'albumPic002' => $pic002, 'p2u' => $pic_2_url, 'albumPic003' => $pic003, 'p3u' => $pic_3_url);
 			array_push($ArrAlbum,$album);
 		}
 		echo json_encode($ArrAlbum);

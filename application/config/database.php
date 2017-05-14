@@ -48,10 +48,10 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-//$db['default']['hostname'] = 'localhost'; //MYSQL服务器地址
-//$db['default']['username'] = 'root';      //MYSQL用户名
-//$db['default']['password'] = '';          //MYSQL用户名密码
-//$db['default']['database'] = 'meitusql';          //MYSQL数据库名称
+// $db['default']['hostname'] = 'localhost'; //MYSQL服务器地址
+// $db['default']['username'] = 'cxl';      //MYSQL用户名
+// $db['default']['password'] = '21087591';          //MYSQL用户名密码
+// $db['default']['database'] = 'meitusql_local';          //MYSQL数据库名称
 
 $db['default']['hostname'] = 'bdm267037686.my3w.com:3306'; //MYSQL服务器地址
 $db['default']['username'] = 'bdm267037686';      //MYSQL用户名
