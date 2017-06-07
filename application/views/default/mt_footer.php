@@ -42,6 +42,51 @@
 <?php } ?>
 <?php } ?>
 <?php } ?>
+<?php
+$winddb = ['uid'=>'', 'username'=>''];
+if ($this->session->userdata('online')) {
+	$winddb['uid'] = $this->session->userdata('id');
+	$winddb['username'] = $this->session->userdata('Username');
+}
+
+print <<<EOT
+EOT;
+$xlm_wid='10266';
+$xlm_key='Rc7RcwQgttj7xOchbuKEdtbvJF56KdjJ';
+$xlm_url='https://www.xianliao.me/';
+$xlm_uid =  $winddb['uid'] ? $winddb['uid'] : 27;
+$xlm_username =  $winddb['username'] ? $winddb['username'] : '';
+$xlm_time=time();
+$xlm_hash=hash('sha512',$xlm_wid.'_'.$xlm_uid.'_'.$xlm_time.'_'.$xlm_key);
+$xlm_js_url = $xlm_url . 'embed.js';
+print <<<EOT
+<script>
+    var xlm_wid='$xlm_wid';
+    var xlm_url='$xlm_url';
+    var xlm_uid='$xlm_uid';
+    var xlm_name='$xlm_username';
+    var xlm_time='$xlm_time';
+    var xlm_hash='$xlm_hash';
+    var xlm_avatar = '';
+
+    //<----请根据您的论坛的具体情况编写抓取用户头像的代码
+    var fields = {};
+    var url   = Home + "yedeng/get_upic/"+$xlm_uid;
+    $.ajax({
+        type: "POST",
+        url: url,
+        dataType: "json",
+        data: fields,
+        success: function(json){
+            var upic = json.data;
+            var xlm_avatar = json.data;
+          }
+    });
+    console.log(xlm_avatar);
+</script>
+<script type='text/javascript' charset='UTF-8' src='$xlm_js_url'></script>
+EOT;
+?>
 <div style="text-align:center;clear:both">
 	<style>
 		.bottom_box{ 

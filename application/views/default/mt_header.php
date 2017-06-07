@@ -61,7 +61,25 @@
       .navbar-right .menu-bd1 { display:none; position:absolute; left:-200px; top:50px; width:90px; border-bottom:1px solid #eee; background-color:#fff; text-align:right; z-index:10001; box-shadow:1px 2px 3px rgba(0,0,0,.1); }
       .navbar-right .menu-bd1 img { width:400px; height:500px; }
       .navbar-right .code1 { width:400px; }
-
+      .block:hover {
+          -webkit-transition: all .5s ease 0s;
+          -moz-transition: all .5s ease 0s;
+          -o-transition: all .5s ease 0s;
+          -moz-transform: translate(0px,-5px);
+          -webkit-transform: translate(0px,-5px);
+          -o-transform: translate(0px,-5px);
+          -ms-transform: translate(0px,-5px);
+          transform: translate(0px,-5px);
+          -webkit-box-shadow: 0 5px 10px rgba(67,72,84,.3);
+          -moz-box-shadow: 0 5px 10px rgba(67,72,84,.3);
+          -o-box-shadow: 0 5px 10px rgba(67,72,84,.3);
+          box-shadow: 0 5px 10px rgba(67,72,84,.3)
+        }
+      /*.block:hover {
+          -webkit-transform: translate3d(0,-2px,0);
+          transform: translate3d(0,-2px,0);
+          box-shadow: 0 15px 30px rgba(0,0,0,.1)
+        }*/
     </style>
   </head>
   <body>
@@ -169,12 +187,65 @@
           <?php
             if (!isset($search)){$search = '';}
           ?>
-          <div class="navbar-form navbar-left" role="search">
+        <div class="navbar-form search-form navbar-left" style="padding:0;margin-top:0;margin-bottom: 0;" role="search">
             <div class="form-group">
-              <input type="text" id="search" value="<?php echo $search ?>" class="form-control border" placeholder="Search" onkeypress="EnterSearch()">
+              <input type="text" id="search" value="<?php echo $search ?>" class="search-input form-control border" placeholder="Search" onkeypress="EnterSearch()">
             </div>
-            <button type="submit" class="btn btn-default border" onClick="Search()" style="color: gray;">Search</button>
-          </div>
+            <button type="submit" class="search-submit btn btn-default border" onclick="Search()" style="color: gray;"><i class="icon-search"></i></button>
+        </div>
+<style>
+.search-form {
+    float: left
+}
+
+.search-form .search-input {
+    float: right;
+    height: 35px;
+    width: 0;
+    margin-top: 5px;
+    padding: 0;
+    color: #eee;
+    background: transparent;
+    border: none;
+    border-radius: 2px;
+    -webkit-transition: .6s;
+    transition: .6s
+}
+
+.search-form:hover .search-input {
+    width: 150px;
+    margin-right: 10px;
+    color: #333;
+    background-color: #fff
+}
+
+.search-form .search-input:focus {
+    width: 150px;
+    color: #333;
+    background: #fff;
+    outline: none
+}
+
+.search-form .search-submit {
+    border: none;
+    background-color: #f8f8f8;
+    color: #f8f8f8;
+    cursor: pointer;
+    -webkit-transition: 1s;
+    transition: 1s;
+    font-size: 25px
+}
+
+.search-form .search-submit:focus {
+    outline: none
+}
+
+.search-form:hover .search-submit,.search-form .search-input:focus+.search-submit {
+    color: #fff;
+    -webkit-transform: rotateY(-180deg);
+    transform: rotateY(-180deg)
+}
+</style>
 
           <ul class="nav navbar-nav navbar-right">
             <li class="menu-hd">
@@ -183,12 +254,12 @@
               <img src="<?php echo base_url('/dist/image/code_wx.jpg') ?>" alt="我的不说微信:zipit21087591">
             </div>
             </li>
-            <li class="menu-hd1">
+<!--             <li class="menu-hd1">
             <a style="color: #ff5f83;font-size：10px;" href=""><b>show me</b></a>
             <div class="menu-bd1 code1">
               <img src="<?php echo base_url('/dist/image/code_wx.jpg') ?>" alt="我的不说微信:zipit21087591">
             </div>
-            </li>
+            </li> -->
          <?php if( $this->session->userdata('online') ) { ?>
             <?php $username = $this->session->userdata('Username'); ?>
             <?php $myletter = $this->letter_model->myletter($username); ?>
@@ -242,7 +313,7 @@
 
                 <?php } ?>
                 <li>
-                  <a href="<?php echo site_url().'upload' ?>" style="color: gray;">
+                  <a href="<?php echo site_url().'uploads' ?>" style="color: gray;">
             <i class="icon-upload-alt"  style="color: #0000ff"></i>
             〓本地图片上传
           </a>
@@ -267,7 +338,13 @@
                 <i class="icon-list-alt" style="color: #ff66ff"></i>
                 〓创建自己的专辑</a>
                 </li>
-                
+                <?php ?>
+                <li class="divider"></li>
+                <li><a href="<?php echo site_url().'user/cellphone' ?>"style="color: gray">
+                <i class="icon-user" style="color: #ff3535"></i>
+                〓补填手机信息</a>
+                </li>
+                <?php ?>
                 <li class="divider"></li>
                 <li><a href="<?php echo site_url().'logout' ?>"style="color: gray">
                 <i class="icon-off" style="color: #ff3535"></i>

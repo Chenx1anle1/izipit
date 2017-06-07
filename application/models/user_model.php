@@ -15,6 +15,13 @@ class User_model extends CI_Model {
 		return $query->result_array();
   	}
 
+    public function user($id)
+    {
+        $this->db->where('id', $id);
+        $query = $this->db->get('xi_users');
+        return $query->result_array();
+    }
+
   	public function users2($page) {
 		$this->db->order_by("user_view", "desc");
 		$this->db->order_by("user_follow", "desc");		//通过关注量排行

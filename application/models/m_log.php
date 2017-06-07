@@ -42,34 +42,34 @@ class M_log extends CI_Model {
      * @return boolean
      */
     public function log($level = '', $field = '', $model = '', $param = '') {
-        $post = array();
+        // $post = array();
 
-        $post['level'] = $level;
-        $post['field'] = $field;
+        // $post['level'] = $level;
+        // $post['field'] = $field;
 
-        $RTR =& load_class('Router', 'core');
-        $post['file'] = 'controllers/' . $RTR->fetch_directory() . $RTR->fetch_class() . '.php';
-        $post['action'] = ucfirst($RTR->fetch_class()) . '::' . $RTR->fetch_method();
-        $post['method'] = $RTR->fetch_method();
-        $post['param'] = $param;
+        // $RTR =& load_class('Router', 'core');
+        // $post['file'] = 'controllers/' . $RTR->fetch_directory() . $RTR->fetch_class() . '.php';
+        // $post['action'] = ucfirst($RTR->fetch_class()) . '::' . $RTR->fetch_method();
+        // $post['method'] = $RTR->fetch_method();
+        // $post['param'] = $param;
 
-        $post['model'] = $model;
-        $post['querystring'] = $this->db->last_query();
-        // $post['data'] = $data;
+        // $post['model'] = $model;
+        // $post['querystring'] = $this->db->last_query();
+        // // $post['data'] = $data;
 
-        $post['ip'] = $this->input->ip_address();
-        $post['time'] = time();
-        if( $this->session->userdata('online')) {
-            // $user_id = $this->session->userdata('id');
-            $post['uid'] = $this->session->userdata['id'];
-            $post['uname'] = $this->session->userdata['Username'];
-            if ($insert_id = $this->db->insert('user_log', $post)) {
-                return $insert_id;
-            } else {
-            }
-        } else {
-        return FALSE;
-        }
+        // $post['ip'] = $this->input->ip_address();
+        // $post['time'] = time();
+        // if( $this->session->userdata('online')) {
+        //     // $user_id = $this->session->userdata('id');
+        //     $post['uid'] = $this->session->userdata['id'];
+        //     $post['uname'] = $this->session->userdata['Username'];
+        //     if ($insert_id = $this->db->insert('user_log', $post)) {
+        //         return $insert_id;
+        //     } else {
+        //     }
+        // } else {
+        // return FALSE;
+        // }
     }
 
     /**

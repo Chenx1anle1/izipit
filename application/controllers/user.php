@@ -22,6 +22,17 @@ class User extends CI_Controller {
 		$this->head['description'] = $this->description;
 	}
 
+	public function cellphone()
+	{
+		$this->head['title']       = "手机验证";
+		$this->head['keywords']    = "";
+		$this->head['description'] = "手机验证";
+
+		$this->load->view('default/mt_header.php',$this->head);
+		$data = [];
+		$this->load->view('mt_cellphone.php',$data);
+	}
+
 	public function index($user = "admin") {
 		$user     = urldecode($user);
 		$this->head['title']       =  "这是" . $user . "的个人主页";

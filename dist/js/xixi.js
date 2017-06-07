@@ -78,6 +78,7 @@ $(function() {
 					height  : iHeight
 				});
 				oDiv.css("position","absolute");
+				oDiv.addClass("block");
 				oContainer.append(oDiv);		
 /////////////////////			
 				var labela = $('<label>')

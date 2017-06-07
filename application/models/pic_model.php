@@ -1,6 +1,6 @@
 <?php
 class Pic_model extends CI_Model {
-  private $pagenum = 50;
+  private $pagenum = 10;
   
 	public function __construct() {
     	$this->load->database();

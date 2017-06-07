@@ -62,6 +62,16 @@ class yedeng extends CI_Controller {
       	$this->load->view('default/mt_footer.php');
 	}
 
+	public function get_upic($id = 27)
+	{
+		$query = $this->db->get_where('xi_users',array('ID' => $id));
+		foreach ($query->result_array() as $value) {
+			$data['data'] = $value['user_picture'] ? : 'default';
+		}
+		$data['data'] = 'www.izipit.top/upload/user/'.$data['data'].'_2.jpg';
+		echo json_encode($data);
+	}
+
 	public function howto() {
 		$this->load->view('mt_howto.php');
 	}
@@ -253,15 +263,15 @@ class yedeng extends CI_Controller {
 			$this_music = $this->db->select('*')->from('yedeng')->where(array('mid'=>784533))->get()->row_array();
 			$new = [
 						'music_id'=>'784533',
-			            'title'=>'secret base~君がくれたもの~',
-			            'author'=>'123',
-			            'url'=>'http://devtest.qiniudn.com/secret base~.mp3',
-			            'pic'=>'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2534129488,2639379667&fm=58',
-			            'lrc'=>'https://aplayer.js.org/secret%20base~%E5%90%9B%E3%81%8C%E3%81%8F%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE~.lrc'
+			            'title'=>'今生你作伴.mp3',
+			            'author'=>'陈慧琳',
+			            'url'=>'http://www.izipit.top/dist/陈慧琳 - 今生你作伴.mp3',
+			            'pic'=>'http://p4.music.126.net/qrHyq-09z1SrWQFT2TWv_Q==/109951162916796168.jpg?param=200y200',
+			            'lrc'=>'http://www.izipit.top/dist/今生你作伴(国).lrc'
 			];
-			$new['author'] = '茅野愛衣</span><input type="hidden" value="784533">';
+			$new['author'] = '陈慧琳</span><input type="hidden" value="784533">';
 			if ($this->session->userdata('id') && strpos($this_music['love_ids'], $this->session->userdata('id').',')) {
-				$new['author'] = '茅野愛衣</span><input type="hidden" value="784533">'.'<i style="float:left;color:#ff8080" id="heart" class="icon-heart"></i><span>';
+				$new['author'] = '陈慧琳</span><input type="hidden" value="784533">'.'<i style="float:left;color:#ff8080" id="heart" class="icon-heart"></i><span>';
 			}
 			array_push($ArrAlbum, $new);
 			$merge = array_merge($ArrAlbum, $album);
@@ -279,16 +289,56 @@ class yedeng extends CI_Controller {
 		}
 	}
 
+	public function article($id)
+	{
+		$this->db->select('ap.*, y.title m_title')
+				 ->from('article_pice ap')
+				 ->join('yedeng y','ap.mc_id = y.mid')
+				 ->where(['ap.id'=>$id])
+				 ->order_by('uptime asc, id asc');
+		$article = $this->db->get()->result_array();
+		$data['article'] = $article[0];
+		$user = $this->user_model->user($article[0]['uid']);
+		$user_login = $user[0]['user_login'];
+        $data['username'] = $user_login;
+		$data['uptime'] = date('Y-m-d h:i', $data['article']['uptime']);
+		$data['href'] = base_url('user/picture') . '/' . $user_login;
+		$picture = 'upload/user/' . $this->user_model->picture($user_login) . '_3.jpg';
+		if (file_exists($picture)) {
+			$data['userpic'] = base_url('upload/user/' . $this->user_model->picture($user_login) . '_3.jpg');
+		} else {
+			$data['userpic'] = base_url('upload/user/default_3.jpg');
+		}
+
+		$this->load->view('default/mt_header.php',$this->head);
+		$this->load->view('article',$data);
+		$this->load->view('default/mt_footer.php');
+	}
+
 	public function load_article($mid, $uid = 0) {
 			$this->db->select('ap.*, y.title m_title')
 					 ->from('article_pice ap')
 					 ->join('yedeng y','ap.mc_id = y.mid')
 					 ->where(['ap.mc_id'=>$mid])
-					 ->order_by('uptime asc, id asc');
+					 ->order_by('id asc, uptime asc');
 			$uid && $this->db->where(['ap.uid'=>$uid]);
 			$all = $this->db->get()->result_array();
 $count = count($all)+1;
 $width = ($count+1)*900;
+$username = $href = $userpic = '';
+if(isset($all[0]['uid'])) {
+	$user = $this->user_model->user($all[0]['uid']);
+	$user_login = $user[0]['user_login'];
+	$username = $user_login;
+	$href = base_url('user/picture') . '/' . $user_login;
+	$picture = 'upload/user/' . $this->user_model->picture($user_login) . '_3.jpg';
+	if (file_exists($picture)) {
+		$userpic = base_url('upload/user/' . $this->user_model->picture($user_login) . '_3.jpg');
+	} else {
+		$userpic = base_url('upload/user/default_3.jpg');
+	}
+}
+
 $html="<!--留言 {$mid}--><div id='id_{$mid}' class='helpcenter_rightInIn'>";
 $bottom = "<a class='helpcenter_bBL'><</a>";
 $botom_end = "<a class='helpcenter_bBR'>></a>";
@@ -296,7 +346,8 @@ if (!empty($all)) {
 	$k = 0;
 	foreach ($all as $key => $val) {
 		$key = $key + 1;
-		$html .= "<!-- 图文{$key} --><div class='helpcenter_rightIns helpcenter_rightInsOn'><div class='helpcenter_rightInL'><h2><span>{$val['title']} </span><label style='font-size:12px;'>({$val['m_title']}期)</label><span class='helpcenter_span1'>{$key}</span><span>/</span><span>{$count}</span></h2>{$val['txt']}</div></div>";
+		$article_url = "<a style='color:#F7B5C4;' target='_blank' href='".base_url('yedeng/article').'/'.$val['id']."' >阅读全文</a>";
+		$html .= "<!-- 图文{$key} --><div class='helpcenter_rightIns helpcenter_rightInsOn'><div class='helpcenter_rightInL'><a href='{$href}'><img src='{$userpic}'' class='img-circle' style='height: 35px'><label>{$username}</label></a><h2><span>{$val['title']} </span><label style='font-size:12px;'>({$val['m_title']}期){$article_url}</label><span class='helpcenter_span1'>{$key}</span><span>/</span><span>{$count}</span></h2>{$val['txt']}</div></div>";
 		if ($key == 1) {
 			$bottom = $bottom."<a class='helpcenter_bB helpcenter_bBon'>{$key}</a>";
 		} else {

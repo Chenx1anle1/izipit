@@ -78,6 +78,7 @@ class Xixi extends CI_Controller {
 		$data['pictureURL'] = base_url('xixi/hot_like');
 		$this->load->view('mt_index.php',$data);
         $this->load->view('default/mt_footer.php');
+        $this->m_log->log(1,'popular_like', '', json_encode(func_get_args()));
 	}
 
 	public function popular_view() {   //热门
@@ -86,6 +87,7 @@ class Xixi extends CI_Controller {
 		$data['pictureURL'] = base_url('xixi/hot_view');
 		$this->load->view('mt_index.php',$data);
         $this->load->view('default/mt_footer.php');
+        $this->m_log->log(1,'popular_view', '', json_encode(func_get_args()));
 	}
 	public function popular_love() {   //热门
 		$this->head['title'] = "Top收藏图片-" . $this->title;
@@ -93,6 +95,7 @@ class Xixi extends CI_Controller {
 		$data['pictureURL'] = base_url('xixi/hot_love');
 		$this->load->view('mt_index.php',$data);
         $this->load->view('default/mt_footer.php');
+        $this->m_log->log(1,'popular_love', '', json_encode(func_get_args()));
 	}
 //我的热门图片
 	public function popular_mypic() {   //热门
@@ -150,6 +153,7 @@ class Xixi extends CI_Controller {
 		$this->load->view('default/mt_page.php');
 
 		$this->load->view('default/mt_footer.php');
+        $this->m_log->log(1,'popular_users', '', json_encode(func_get_args()));
 
 	}
 
@@ -185,7 +189,7 @@ class Xixi extends CI_Controller {
 		// 打乱数组顺序
 		shuffle($query);
 		// var_dump($query);die();
-		$query = array_slice($query, 0, 10);
+		// $query = array_slice($query, 0, 10);
 		// print_r($query);die();
 		$this->imageInfo($query);
 	}
@@ -208,6 +212,7 @@ class Xixi extends CI_Controller {
 				$image_p  = base_url($value['pic_url']);
 
 			$image    = GetImageSize($value['pic_url']);
+
 			$image_w  = $image[0];
 			$image_h  = $image[1];
 
@@ -242,6 +247,7 @@ class Xixi extends CI_Controller {
 		$data['pictureURL'] = base_url('xixi/cat') . "/" . urldecode($catalogue);
 		$this->load->view('mt_index.php',$data);
         $this->load->view('default/mt_footer.php');
+        $this->m_log->log(1,'catalogue', '', json_encode(func_get_args()));
 	}
 
 	public function cat($catalogue = "",$page = 1) {   //返回指定分类的数据
@@ -266,6 +272,7 @@ class Xixi extends CI_Controller {
 		$data['pictureURL'] = base_url('xixi/gettag') . "/" . urldecode($tag);
 		$this->load->view('mt_index.php',$data);
         $this->load->view('default/mt_footer.php');
+        $this->m_log->log(1,'tag', '', json_encode(func_get_args()));
 	}
 
 	public function gettag($tag = "",$page = 1) {   //返回指定标签的数据
@@ -307,6 +314,7 @@ class Xixi extends CI_Controller {
 			$jsonStr = array('love' => 0, 'is_love' => 0, 'is_login' => 0 );
 		}
 
+        $this->m_log->log(0,'addlove', '', json_encode(func_get_args()));
 		array_push($loveArray,$jsonStr);
 
 		echo json_encode($loveArray);
@@ -333,6 +341,7 @@ class Xixi extends CI_Controller {
 			$jsonStr = array('like' => 0, 'is_like' => 0, 'is_login' => 0 );
 		}
 
+        $this->m_log->log(0,'addlike', '', json_encode(func_get_args()));
 		array_push($likeArray,$jsonStr);
 
 		echo json_encode($likeArray);
@@ -401,6 +410,7 @@ class Xixi extends CI_Controller {
 
 		}
 
+        $this->m_log->log(1,'album', '', json_encode(func_get_args()));
 		echo json_encode($query);
 	}
 

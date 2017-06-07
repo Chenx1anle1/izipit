@@ -83,7 +83,7 @@ jQuery(function() {
         disableGlobalDnd: true,
 
         chunked: true,
-        server: Home + 'upload/image',
+        server: Home + 'uploads/image',
         fileNumLimit: imageNum,
         fileSizeLimit: imageNum * imageSize,    // 100 M
         fileSingleSizeLimit: imageSize,   // 10 M

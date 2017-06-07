@@ -4,13 +4,14 @@ class View extends CI_Controller {
 
 	public function index( $id = 0 ) {
 		//$realip = xi_get_ClientIp();  
-
+		$this->load->model('m_log');
 	    $uuid = $this->pic_model->guuid($id);
 
 		if ( $this->pic_model->is_view($uuid) ) {  //记录存在
 			$this->pic_model->addview($uuid);      //更新图片浏览次数
 			$query = $this->pic_model->one($uuid);
 
+        	$this->m_log->log(1,'view', '', json_encode(func_get_args()));
 			foreach ($query as $value) {
 					$data['url']  = base_url($value['pic_url']);
 
